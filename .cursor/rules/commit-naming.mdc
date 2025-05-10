@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 ---
 description: Reglas para versionamiento semántico y mensajes de commit
-globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.css", "*.scss", "*.json"]
+globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.css", "*.scss"]
 alwaysApply: true
 ---
 
