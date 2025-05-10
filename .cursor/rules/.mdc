@@ -1,0 +1,78 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Reglas para versionamiento semántico y mensajes de commit
+globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.css", "*.scss", "*.json"]
+alwaysApply: true
+---
+
+# Reglas de Versionamiento Semántico para Portfolio Iterativo
+
+## Estructura de Commit
+
+Todos los mensajes de commit deben seguir el formato de Conventional Commits adaptado para este proyecto iterativo y experimental:
+
+´´´
+<tipo>(<ámbito>): <descripción corta>
+[cuerpo opcional con más detalles]
+[notas de pie opcionales]
+´´´
+
+## Tipos de Commit
+
+- **feat**: Nueva funcionalidad
+- **fix**: Corrección de error
+- **docs**: Cambios en documentación
+- **style**: Cambios de formato, espaciado, etc. (no afectan código)
+- **refactor**: Refactorización de código existente
+- **perf**: Mejoras de rendimiento
+- **test**: Añadir o corregir tests
+- **chore**: Tareas de mantenimiento, gestión de paquetes
+- **i18n**: Relacionado con internacionalización
+- **ai**: Componentes relacionados con IA
+- **exp**: Implementaciones experimentales e iterativas
+
+## Ámbitos Específicos
+
+- **core**: Componentes fundamentales del portfolio
+- **blog**: Sistema de blog
+- **ui**: Interfaz de usuario y componentes
+- **three**: Visualizaciones 3D
+- **playground**: AI Playground
+- **i18n**: Sistema de internacionalización
+
+## Versionamiento Semántico
+
+Seguir los estándares SemVer X.Y.Z-[pre-release]+[metadata]:
+- MAJOR (X): Cambios que transforman arquitectura o experiencia
+- MINOR (Y): Nuevas funcionalidades manteniendo compatibilidad
+- PATCH (Z): Correcciones y mejoras incrementales
+- Usar pre-release (alpha/beta/rc) para trabajo experimental
+
+## Ejemplos
+
+✅ `feat(playground): añadir primera demo de IA conversacional`
+✅ `fix(i18n): corregir detección automática de idioma`
+✅ `exp(three): implementar visualización 3D experimental para portfolio`
+✅ `chore(deps): actualizar dependencias de Next.js a v14`
+✅ `refactor(blog): migrar sistema de gestión de contenido`
+
+## Enfoque Experimental e Iterativo
+
+- Los commits deben reflejar la naturaleza experimental e iterativa del desarrollo
+- Usar el tipo `exp` para ideas que pueden o no llegar a la versión final
+- Documentar claramente el propósito de experimentos en el cuerpo del commit
+- Relacionar cambios con las versiones definidas en el PRD cuando sea aplicable
+
+## Milestone References
+
+Referenciar milestones cuando sea aplicable:
+- Milestone 1: Fundación (v0.1.0 - v0.3.0)
+- Milestone 2: Primer Release Público (v1.0.0)
+- Milestone 3: Inteligencia Artificial (v1.1.0 - v2.0.0)
+
+
+- Milestone 4: Globalización (v1.3.0 - v3.0.0)

@@ -1,0 +1,85 @@
+flowchart TB
+    subgraph "Estructura de Versiones"
+        direction LR
+        V["X.Y.Z[-pre-release][+metadata]"]
+        V -->|"Cambios en arquitectura<br>o breaking changes"| X["X (MAJOR)"]
+        V -->|"Nuevas funcionalidades<br>compatibles"| Y["Y (MINOR)"]
+        V -->|"Correcciones y<br>mejoras incrementales"| Z["Z (PATCH)"]
+        V -->|"Versiones experimentales"| P["pre-release<br>(alpha/beta/rc)"]
+        V -->|"Información adicional"| M["metadata<br>(build/branch)"]
+    end
+
+    subgraph "Flujo de Ramas de Git"
+        direction TB
+        main["main<br>(producción)"] 
+        develop["develop<br>(pre-producción)"]
+        feature["feature/*<br>(funcionalidades)"]
+        experiment["experiment/*<br>(ideas experimentales)"]
+        release["release/*<br>(preparación de versiones)"]
+        hotfix["hotfix/*<br>(correcciones urgentes)"]
+        
+        develop -->|"merge cuando<br>funcionalidad completa"| feature
+        feature -->|"merge"| develop
+        develop -->|"experimentación"| experiment
+        experiment -->|"si es exitoso"| develop
+        develop -->|"preparar release"| release
+        release -->|"versión estable"| main
+        release -->|"merge back"| develop
+        main -->|"corrección urgente"| hotfix
+        hotfix -->|"fix"| main
+        hotfix -->|"merge back"| develop
+    end
+
+    subgraph "Ciclo de Vida de Versiones"
+        direction LR
+        v010["v0.1.0-v0.3.0<br>Fundación"]
+        v100["v1.0.0<br>Release Público"]
+        v110["v1.1.0-v2.0.0<br>AI Playground"]
+        v130["v1.3.0-v3.0.0<br>Globalización"]
+        
+        v010 -->|"MVP y blog"| v100
+        v100 -->|"Desarrollo AI"| v110
+        v100 -->|"Inicio i18n"| v130
+        v110 -.->|"integración"| v130
+    end
+
+    subgraph "Estructura de Commits"
+        C["tipo(ambito): descripción<br><br>[cuerpo opcional]<br><br>[nota de pie opcional]"]
+        
+        subgraph "Tipos"
+            T1["feat: [nueva funcionalidad]"]
+            T2["fix: [corrección de error]"]
+            T3["docs: [cambios en documentación]"]
+            T4["style: [cambios de formato]"]
+            T5["refactor: [refactorización]"]
+            T6["perf: [mejoras de rendimiento]"]
+            T7["test: [testing]"]
+            T8["chore: [mantenimiento]"]
+            T9["i18n: [internacionalización]"]
+            T10["ai: [componentes de IA]"]
+            T11["exp: [experimentación]"]
+        end
+        
+        subgraph "Ámbitos"
+            S1["core: [componentes fundamentales]"]
+            S2["blog: [sistema de blog]"]
+            S3["ui: [interfaz de usuario]"]
+            S4["three: [visualizaciones 3D]"]
+            S5["playground: [AI Playground]"]
+            S6["i18n: [internacionalización]"]
+        end
+        
+        C --> T1
+        C --> S1
+    end
+
+    subgraph "Milestones del Proyecto"
+        direction TB
+        M1["Milestone 1:<br>Fundación<br>(v0.1.0-v0.3.0)"]
+        M2["Milestone 2:<br>Primer Release<br>(v1.0.0)"]
+        M3["Milestone 3:<br>AI Playground<br>(v1.1.0-v2.0.0)"]
+        M4["Milestone 4:<br>Globalización<br>(v1.3.0-v3.0.0)"]
+        
+        M1 --> M2 --> M3
+        M2 --> M4
+    end
