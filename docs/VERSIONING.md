@@ -1,8 +1,8 @@
 # VERSIONING.md
 
-# Guía de Versionamiento Semántico para Portfolio Iterativo
+# Guía de Versionamiento Semántico para Portfolio Iterativo con JIRA
 
-Este documento describe la estrategia de versionamiento semántico utilizada en este proyecto de portfolio iterativo y experimental. Su propósito es establecer un enfoque estandarizado para el control de versiones, la creación de ramas, tags, y la nomenclatura de commits.
+Este documento describe la estrategia de versionamiento semántico utilizada en este proyecto de portfolio iterativo y experimental. Su propósito es establecer un enfoque estandarizado para el control de versiones, la creación de ramas, tags, y la nomenclatura de commits integrado con JIRA.
 
 ## 1. Estructura de Versionamiento Semántico
 
@@ -28,49 +28,52 @@ Donde:
 | 1.1.0 - 2.0.0 | Milestone 3: AI Playground - Desde fundación hasta implementación completa |
 | 1.3.0 - 3.0.0 | Milestone 4: Globalización - Sistema de internacionalización progresivo |
 
-## 2. Estructura de Ramas
+## 2. Estructura de Ramas con JIRA
 
-Utilizamos un modelo de Git Flow adaptado a nuestro proceso iterativo:
+Utilizamos un modelo de Git Flow adaptado a nuestro proceso iterativo e integrado con JIRA:
 
 ```
-main              # Versiones estables publicadas (production-ready)
-develop           # Integración de características (pre-producción)
-feature/*         # Características en desarrollo
-experiment/*      # Ideas experimentales que pueden o no integrarse
-release/*         # Preparación de versiones para publicación
-hotfix/*          # Correcciones urgentes sobre main
+main # Versiones estables publicadas (production-ready)
+develop # Integración de características (pre-producción)
+feature/YA-<número>/descripcion # Características en desarrollo vinculadas a tickets JIRA
+experiment/YA-<número>/descripcion # Ideas experimentales vinculadas a tickets JIRA
+release/vX.Y.Z # Preparación de versiones para publicación
+hotfix/YA-<número>/descripcion # Correcciones urgentes vinculadas a tickets JIRA
 ```
 
-### 2.1 Flujo de trabajo con ramas
+### 2.1 Flujo de trabajo con ramas y JIRA
 
 1. **Desarrollo de funcionalidades**:
-   - Las nuevas funcionalidades se desarrollan en ramas `feature/*` desde `develop`
-   - Una vez completadas, se fusionan de vuelta a `develop`
+   - Crear rama `feature/YA-<número>/descripcion` desde `develop` para el ticket asignado
+   - Una vez completada, fusionar de vuelta a `develop`
+   - JIRA rastreará automáticamente los commits asociados al ticket
 
 2. **Experimentación**:
-   - Las ideas experimentales se desarrollan en ramas `experiment/*`
-   - Si resultan exitosas, se integran a `develop`
+   - Desarrollar ideas experimentales en ramas `experiment/YA-<número>/descripcion`
+   - Si resultan exitosas, integrar a `develop`
 
 3. **Preparación de versiones**:
-   - Cuando `develop` contiene suficientes características para una versión, se crea una rama `release/vX.Y.Z`
-   - Se realizan los últimos ajustes y correcciones en esta rama
-   - Finalmente, se fusiona a `main` y se etiqueta con la versión correspondiente
+   - Cuando `develop` contiene suficientes características para una versión, crear rama `release/vX.Y.Z`
+   - Realizar los últimos ajustes y correcciones en esta rama
+   - Finalmente, fusionar a `main` y etiquetar con la versión correspondiente
 
 4. **Correcciones urgentes**:
-   - Las correcciones críticas se realizan en ramas `hotfix/*` desde `main`
-   - Una vez completadas, se fusionan a `main` y a `develop`
+   - Realizar correcciones críticas en ramas `hotfix/YA-<número>/descripcion` desde `main`
+   - Una vez completadas, fusionar a `main` y a `develop`
 
-## 3. Nomenclatura de Commits
+## 3. Nomenclatura de Commits con JIRA
 
-Todos los commits deben seguir el formato de Conventional Commits adaptado para nuestro proyecto:
+Todos los commits deben seguir el formato de Conventional Commits adaptado para integración con JIRA:
 
 ```
-<tipo>(<ámbito>): <descripción corta>
+YA-<número> - <tipo>(<ámbito>): <descripción corta>
 
 [cuerpo opcional con más detalles]
 
 [notas de pie opcionales]
 ```
+
+Donde `YA-<número>` es el identificador del ticket en JIRA (ej: YA-5, YA-11).
 
 ### 3.1 Tipos de Commits
 
@@ -95,16 +98,15 @@ Todos los commits deben seguir el formato de Conventional Commits adaptado para 
 - **playground**: AI Playground
 - **i18n**: Sistema de internacionalización
 
-### 3.3 Ejemplos de Commits
+### 3.3 Ejemplos de Commits con JIRA
 
 ```
-feat(playground): añadir primera demo de IA conversacional
-fix(i18n): corregir detección automática del idioma del navegador
-docs(core): actualizar documentación de arquitectura
-perf(three): optimizar renderizado de escena 3D para móviles
-exp(i18n): implementar traducción en tiempo real con Claude
-refactor(blog): migrar sistema de gestión de contenido a Contentlayer
-chore(deps): actualizar dependencias de Three.js a v150
+YA-5 - feat(core): configuración del proyecto Next.js con TypeScript
+YA-6 - feat(ui): implementación del sistema de estilos con Tailwind
+YA-7 - chore(core): implementación de ESLint y Prettier
+YA-10 - fix(ui): corregir modo claro/oscuro en navegadores Safari
+YA-9 - feat(ui): implementación del sistema de navegación principal
+YA-11 - perf(ui): optimización de maquetación responsive para dispositivos móviles
 ```
 
 ## 4. Gestión de Tags y Releases
@@ -122,15 +124,17 @@ Para pre-releases experimentales:
 v[major].[minor].[patch]-[alpha/beta/rc][número]
 ```
 
-### 4.2 Proceso de Release
+### 4.2 Proceso de Release con JIRA
 
-1. Crear una rama `release/vX.Y.Z` desde `develop`
-2. Realizar los últimos ajustes y correcciones
-3. Actualizar el número de versión en archivos relevantes
-4. Actualizar CHANGELOG.md
-5. Fusionar con `main` usando `--no-ff`
-6. Crear tag en `main`
-7. Fusionar cambios de vuelta a `develop`
+1. Crear un ticket en JIRA para la actualización de versión (ej: YA-XX)
+2. Crear una rama `release/vX.Y.Z` desde `develop`
+3. Realizar los últimos ajustes y correcciones, referenciando tickets JIRA correspondientes
+4. Actualizar el número de versión en archivos relevantes
+5. Actualizar CHANGELOG.md con referencias a tickets JIRA
+6. Fusionar con `main` usando `--no-ff` con mensaje `YA-XX: chore(release): preparar versión X.Y.Z`
+7. Crear tag en `main`
+8. Fusionar cambios de vuelta a `develop`
+9. Cerrar el ticket de versión en JIRA
 
 ### 4.3 Ejemplos de Tags
 
@@ -154,24 +158,47 @@ Nuestro proyecto sigue un enfoque de desarrollo iterativo donde:
 3. **Se prioriza la experimentación**: Las ramas `experiment/*` permiten probar ideas sin compromiso
 4. **La integración es incremental**: Las funcionalidades exitosas se incorporan gradualmente
 5. **La documentación evoluciona**: Este documento mismo se actualizará con el proyecto
+6. **La trazabilidad es clave**: Cada cambio está vinculado a un ticket de JIRA
 
-### 5.1 Gestión de Experimentos
+### 5.1 Gestión de Experimentos con JIRA
 
 Para funcionalidades experimentales:
 
-1. Crear rama `experiment/nombre-experimento` desde `develop`
-2. Usar el tipo de commit `exp` para cambios experimentales
-3. Documentar claramente el propósito y alcance del experimento
-4. Evaluar resultados y decidir si se integra a `develop` o se descarta
+1. Crear un ticket en JIRA etiquetado como "Experimental"
+2. Crear rama `experiment/YA-<número>/descripcion` desde `develop`
+3. Usar el tipo de commit `exp` para cambios experimentales, siempre incluyendo la referencia YA-XX
+4. Documentar claramente el propósito y alcance del experimento
+5. Evaluar resultados y decidir si se integra a `develop` o se descarta
+6. Actualizar el ticket de JIRA con la decisión y resultados
 
-## 6. Herramientas y Automatización
+## 6. Integración con JIRA
+
+La integración con JIRA proporciona trazabilidad completa del desarrollo:
+
+1. **Vinculación automática**: Al incluir la clave del ticket (YA-XX) en commits y ramas, JIRA los vincula automáticamente
+2. **Seguimiento de desarrollo**: JIRA muestra todos los commits, ramas y pull requests asociados a cada ticket
+3. **Transiciones automáticas**: Se pueden configurar transiciones automáticas de estado en tickets basadas en acciones de Git
+4. **Referencias cruzadas**: El CHANGELOG incluye referencias a tickets JIRA para completa trazabilidad
+
+### 6.1 Flujo típico de un ticket en JIRA
+
+1. Ticket creado en estado "Por hacer" (To Do)
+2. Desarrollador asigna el ticket y lo mueve a "En progreso" (In Progress)
+3. Crea rama desde JIRA o manualmente con formato `feature/YA-<número>-descripcion`
+4. Realiza commits con formato `YA-<número>: tipo(ámbito): descripción`
+5. Crea pull request cuando está listo, referenciando el ticket
+6. Después de revisión y aprobación, se fusiona a `develop`
+7. El ticket se mueve a "Hecho" (Done) 
+8. Los cambios se incluyen en el CHANGELOG con formato `[YA-<número>] Descripción del cambio`
+
+## 7. Herramientas y Automatización
 
 Para facilitar este flujo de trabajo, utilizamos:
 
-1. **.cursor/rules/**: Reglas para asistir en la generación de mensajes de commit
-2. **Changelog**: Para generar automáticamente el registro de cambios
+1. **.cursor/rules/**: Reglas para asistir en la generación de mensajes de commit con formato JIRA
+2. **Changelog**: Para generar automáticamente el registro de cambios con referencias a JIRA
 
-## 7. Evaluación y Adaptación
+## 8. Evaluación y Adaptación
 
 Este sistema de versionamiento está sujeto a mejoras continuas. Se revisará y actualizará según evolucione el proyecto para asegurar que sigue cumpliendo con sus objetivos de claridad, trazabilidad y valor demostrativo.
 

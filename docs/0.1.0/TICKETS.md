@@ -6,7 +6,7 @@
 
 #### Tickets:
 
-##### 1.1 [FEATURE] Configuración del proyecto Next.js con TypeScript
+##### YA-5 [FEATURE] Configuración del proyecto Next.js con TypeScript
 - **Descripción**: Inicializar y configurar el proyecto base utilizando Next.js con App Router y TypeScript
 - **Criterios de aceptación**:
   - Proyecto Next.js 14+ inicializado correctamente con TypeScript
@@ -17,7 +17,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #setup, #frontend, #arquitectura
 
-##### 1.2 [FEATURE] Implementación del sistema de estilos con Tailwind
+##### YA-6 [FEATURE] Implementación del sistema de estilos con Tailwind
 - **Descripción**: Configurar e implementar Tailwind CSS como sistema de estilos, definiendo variables para temas y componentes base
 - **Criterios de aceptación**:
   - Tailwind CSS instalado y configurado correctamente
@@ -28,7 +28,7 @@
 - **Estimación**: 3 puntos
 - **Etiquetas**: #frontend, #UI, #estilos
 
-##### 1.3 [TAREA TÉCNICA] Implementación de ESLint y Prettier
+##### YA-7 [TAREA TÉCNICA] Implementación de ESLint y Prettier
 - **Descripción**: Configurar herramientas de calidad de código para mantener estándares consistentes
 - **Criterios de aceptación**:
   - ESLint configurado con reglas para TypeScript y React
@@ -39,7 +39,7 @@
 - **Estimación**: 2 puntos
 - **Etiquetas**: #devtools, #calidad
 
-##### 1.4 [SPIKE] Exploración de alternativas para sistema de analíticas
+##### YA-8 [SPIKE] Exploración de alternativas para sistema de analíticas
 - **Descripción**: Investigar opciones para implementar analíticas respetando GDPR, comparando soluciones como Google Analytics, Plausible, Umami, etc.
 - **Criterios de aceptación**:
   - Documento comparativo con al menos 3 alternativas
@@ -56,7 +56,7 @@
 
 #### Tickets:
 
-##### 2.1 [FEATURE] Implementación del sistema de navegación principal
+##### YA-9 [FEATURE] Implementación del sistema de navegación principal
 - **Descripción**: Crear el sistema de navegación global del sitio, incluyendo menú principal y navegación interna
 - **Criterios de aceptación**:
   - Menú de navegación principal visible en todas las páginas
@@ -68,7 +68,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #frontend, #UI, #navegación, #accesibilidad
 
-##### 2.2 [FEATURE] Implementación de modo claro/oscuro
+##### YA-10 [FEATURE] Implementación de modo claro/oscuro
 - **Descripción**: Desarrollar un sistema de temas que permita al usuario alternar entre modo claro y oscuro
 - **Criterios de aceptación**:
   - Selector de tema visible y accesible
@@ -80,7 +80,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #frontend, #UI, #accesibilidad, #UX
 
-##### 2.3 [FEATURE] Maquetación responsive para dispositivos móviles
+##### YA-11 [FEATURE] Maquetación responsive para dispositivos móviles
 - **Descripción**: Implementar un sistema de diseño responsive que asegure la correcta visualización en todos los dispositivos
 - **Criterios de aceptación**:
   - Visualización correcta en smartphones (320px+)
@@ -92,7 +92,7 @@
 - **Estimación**: 8 puntos
 - **Etiquetas**: #frontend, #responsive, #UX
 
-##### 2.4 [FEATURE] Creación de componentes UI base
+##### YA-12 [FEATURE] Creación de componentes UI base
 - **Descripción**: Desarrollar los componentes fundamentales de UI que se utilizarán en todo el sitio
 - **Criterios de aceptación**:
   - Botones (primario, secundario, terciario)
@@ -104,7 +104,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #frontend, #UI, #componentes
 
-##### 2.5 [TAREA TÉCNICA] Optimización de rendimiento visual
+##### YA-13 [TAREA TÉCNICA] Optimización de rendimiento visual
 - **Descripción**: Implementar mejores prácticas para optimizar la carga y renderizado de elementos visuales
 - **Criterios de aceptación**:
   - Lazy loading de imágenes implementado
@@ -121,7 +121,7 @@
 
 #### Tickets:
 
-##### 3.1 [FEATURE] Implementación de la página de inicio
+##### YA-14 [FEATURE] Implementación de la página de inicio
 - **Descripción**: Crear la página principal con una presentación clara y concisa del perfil profesional
 - **Criterios de aceptación**:
   - Información principal visible en menos de 5 segundos
@@ -133,7 +133,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #frontend, #contenido, #UX
 
-##### 3.2 [FEATURE] Desarrollo de sección "Acerca de"
+##### YA-15 [FEATURE] Desarrollo de sección "Acerca de"
 - **Descripción**: Crear una sección detallada con información profesional y personal relevante
 - **Criterios de aceptación**:
   - Información detallada sobre experiencia profesional
@@ -145,7 +145,7 @@
 - **Estimación**: 3 puntos
 - **Etiquetas**: #frontend, #contenido
 
-##### 3.3 [FEATURE] Implementación de información de contacto
+##### YA-16 [FEATURE] Implementación de información de contacto
 - **Descripción**: Desarrollar sistema de contacto accesible desde cualquier página
 - **Criterios de aceptación**:
   - Múltiples canales de contacto disponibles (email, redes, formulario)
@@ -157,7 +157,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #frontend, #contacto, #formulario
 
-##### 3.4 [FEATURE] Indicadores de versión y estado de desarrollo
+##### YA-17 [FEATURE] Indicadores de versión y estado de desarrollo
 - **Descripción**: Implementar elementos visuales que muestren el estado de desarrollo y versión actual del portfolio
 - **Criterios de aceptación**:
   - Indicador visible de versión actual (0.1.0 MVP Fundacional)
@@ -174,7 +174,7 @@
 
 #### Tickets:
 
-##### 4.1 [FEATURE] Implementación de sistema de analíticas base
+##### YA-18 [FEATURE] Implementación de sistema de analíticas base
 - **Descripción**: Integrar el sistema de analíticas seleccionado y configurar eventos clave
 - **Criterios de aceptación**:
   - Sistema de analíticas funcionando correctamente
@@ -186,7 +186,7 @@
 - **Estimación**: 5 puntos
 - **Etiquetas**: #analíticas, #backend, #privacidad
 
-##### 4.2 [FEATURE] Integración de banner de consentimiento de cookies
+##### YA-19 [FEATURE] Integración de banner de consentimiento de cookies
 - **Descripción**: Implementar un banner de consentimiento de cookies conforme a normativas GDPR
 - **Criterios de aceptación**:
   - Banner visible para nuevos visitantes
@@ -198,7 +198,7 @@
 - **Estimación**: 3 puntos
 - **Etiquetas**: #frontend, #privacidad, #legal
 
-##### 4.3 [TAREA TÉCNICA] Optimización de SEO básico
+##### YA-20 [TAREA TÉCNICA] Optimización de SEO básico
 - **Descripción**: Implementar las mejores prácticas de SEO para mejorar la visibilidad del portfolio
 - **Criterios de aceptación**:
   - Metadatos (title, description) optimizados para todas las páginas
@@ -210,7 +210,7 @@
 - **Estimación**: 3 puntos
 - **Etiquetas**: #SEO, #optimización, #frontend
 
-##### 4.4 [BUG] Corregir potenciales problemas de accesibilidad
+##### YA-21 [BUG] Corregir potenciales problemas de accesibilidad
 - **Descripción**: Identificar y corregir problemas de accesibilidad en la implementación inicial
 - **Criterios de aceptación**:
   - Auditoría completa con Lighthouse Accessibility
@@ -238,7 +238,7 @@
 
 ### Puntos totales por Epic
 1. Infraestructura Técnica: 12 puntos
-2. Diseño e Interfaz: 26 puntos 
+2. Diseño e Interfaz: 26 puntos
 3. Contenido e Información: 16 puntos
 4. Analíticas y Optimización: 14 puntos
 

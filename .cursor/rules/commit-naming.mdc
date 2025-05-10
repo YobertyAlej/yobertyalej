@@ -3,18 +3,19 @@ description: Reglas para versionamiento semántico y mensajes de commit
 globs: ["*.ts", "*.tsx", "*.js", "*.jsx", "*.md", "*.css", "*.scss"]
 alwaysApply: true
 ---
-
-# Reglas de Versionamiento Semántico para Portfolio Iterativo
+# Reglas de Versionamiento Semántico para Portfolio Iterativo con JIRA
 
 ## Estructura de Commit
 
-Todos los mensajes de commit deben seguir el formato de Conventional Commits adaptado para este proyecto iterativo y experimental:
+Todos los mensajes de commit deben seguir el formato que incluye la referencia a JIRA:
 
 ´´´
-<tipo>(<ámbito>): <descripción corta>
+YA-<número>: <tipo>(<ámbito>): <descripción corta>
 [cuerpo opcional con más detalles]
 [notas de pie opcionales]
 ´´´
+
+Donde YA-<número> es el identificador del ticket de JIRA (ej: YA-5, YA-11).
 
 ## Tipos de Commit
 
@@ -49,25 +50,28 @@ Seguir los estándares SemVer X.Y.Z-[pre-release]+[metadata]:
 
 ## Ejemplos
 
-✅ `feat(playground): añadir primera demo de IA conversacional`
-✅ `fix(i18n): corregir detección automática de idioma`
-✅ `exp(three): implementar visualización 3D experimental para portfolio`
-✅ `chore(deps): actualizar dependencias de Next.js a v14`
-✅ `refactor(blog): migrar sistema de gestión de contenido`
+✅ `YA-1 - feat(playground): añadir primera demo de IA conversacional`
+✅ `YA-6 - fix(i18n): corregir detección automática de idioma`
+✅ `YA-8 - exp(three): implementar visualización 3D experimental para portfolio`
+✅ `YA-2 - chore(deps): actualizar dependencias de Next.js a v14`
+✅ `YA-4 - refactor(blog): migrar sistema de gestión de contenido`
 
-## Enfoque Experimental e Iterativo
+## Nomenclatura de Ramas con JIRA
 
-- Los commits deben reflejar la naturaleza experimental e iterativa del desarrollo
-- Usar el tipo `exp` para ideas que pueden o no llegar a la versión final
-- Documentar claramente el propósito de experimentos en el cuerpo del commit
-- Relacionar cambios con las versiones definidas en el PRD cuando sea aplicable
+Para desarrollar un ticket de JIRA, crea una rama con el formato:
 
-## Milestone References
+´´´
+feature/YA-<número>/breve-descripción
+´´´
 
-Referenciar milestones cuando sea aplicable:
-- Milestone 1: Fundación (v0.1.0 - v0.3.0)
-- Milestone 2: Primer Release Público (v1.0.0)
-- Milestone 3: Inteligencia Artificial (v1.1.0 - v2.0.0)
+Por ejemplo:
+- `feature/YA-5/configuracion-nextjs-typescript`
+- `feature/YA-6/implementacion-tailwind`
+- `fix/YA-10/corregir-modo-oscuro`
 
+## Integración con JIRA
 
-- Milestone 4: Globalización (v1.3.0 - v3.0.0)
+Al incluir la clave del ticket (YA-<número>) en los commits y nombres de ramas, JIRA:
+- Vinculará automáticamente los commits al ticket correspondiente
+- Mostrará el historial de desarrollo en el panel "Desarrollo" del ticket
+- Permitirá seguir el progreso del desarrollo desde la interfaz de JIRA

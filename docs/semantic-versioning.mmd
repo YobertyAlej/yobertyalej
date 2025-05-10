@@ -9,15 +9,15 @@ flowchart TB
         V -->|"Información adicional"| M["metadata<br>(build/branch)"]
     end
 
-    subgraph "Flujo de Ramas de Git"
+    subgraph "Flujo de Ramas de Git con JIRA"
         direction TB
-        main["main<br>(producción)"] 
+        main["main<br>(producción)"]
         develop["develop<br>(pre-producción)"]
-        feature["feature/*<br>(funcionalidades)"]
-        experiment["experiment/*<br>(ideas experimentales)"]
-        release["release/*<br>(preparación de versiones)"]
-        hotfix["hotfix/*<br>(correcciones urgentes)"]
-        
+        feature["feature/YA-xx-descripcion<br>(funcionalidades)"]
+        experiment["experiment/YA-xx-descripcion<br>(ideas experimentales)"]
+        release["release/vX.Y.Z<br>(preparación de versiones)"]
+        hotfix["hotfix/YA-xx-descripcion<br>(correcciones urgentes)"]
+
         develop -->|"merge cuando<br>funcionalidad completa"| feature
         feature -->|"merge"| develop
         develop -->|"experimentación"| experiment
@@ -36,16 +36,16 @@ flowchart TB
         v100["v1.0.0<br>Release Público"]
         v110["v1.1.0-v2.0.0<br>AI Playground"]
         v130["v1.3.0-v3.0.0<br>Globalización"]
-        
+
         v010 -->|"MVP y blog"| v100
         v100 -->|"Desarrollo AI"| v110
         v100 -->|"Inicio i18n"| v130
         v110 -.->|"integración"| v130
     end
 
-    subgraph "Estructura de Commits"
-        C["tipo(ambito): descripción<br><br>[cuerpo opcional]<br><br>[nota de pie opcional]"]
-        
+    subgraph "Estructura de Commits con JIRA"
+        C["YA-xx - tipo(ambito): descripción<br><br>[cuerpo opcional]<br><br>[nota de pie opcional]"]
+
         subgraph "Tipos"
             T1["feat: [nueva funcionalidad]"]
             T2["fix: [corrección de error]"]
@@ -59,7 +59,7 @@ flowchart TB
             T10["ai: [componentes de IA]"]
             T11["exp: [experimentación]"]
         end
-        
+
         subgraph "Ámbitos"
             S1["core: [componentes fundamentales]"]
             S2["blog: [sistema de blog]"]
@@ -68,9 +68,29 @@ flowchart TB
             S5["playground: [AI Playground]"]
             S6["i18n: [internacionalización]"]
         end
-        
+
+        subgraph "Ejemplos"
+            E1["YA-5 - feat(ui): añadir componentes base"]
+            E2["YA-10 - fix(ui): corregir modo oscuro"]
+            E3["YA-7 - docs(core): actualizar documentación"]
+        end
+
         C --> T1
         C --> S1
+        C --> E1
+    end
+
+    subgraph "Integración JIRA"
+        direction TB
+        J1["Ticket en JIRA<br>YA-xx"]
+        J2["Rama feature/YA-xx-descripcion"]
+        J3["Commit YA-xx: tipo(ámbito): descripción"]
+        J4["Entrada en CHANGELOG<br>[YA-xx] Descripción del cambio"]
+
+        J1 -->|"Crea rama desde ticket"| J2
+        J2 -->|"Commits referenciando ticket"| J3
+        J3 -->|"Actualiza CHANGELOG"| J4
+        J4 -->|"Cierra ticket"| J1
     end
 
     subgraph "Milestones del Proyecto"
@@ -79,7 +99,7 @@ flowchart TB
         M2["Milestone 2:<br>Primer Release<br>(v1.0.0)"]
         M3["Milestone 3:<br>AI Playground<br>(v1.1.0-v2.0.0)"]
         M4["Milestone 4:<br>Globalización<br>(v1.3.0-v3.0.0)"]
-        
+
         M1 --> M2 --> M3
         M2 --> M4
     end

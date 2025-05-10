@@ -4,7 +4,7 @@ globs: ["CHANGELOG.md", "package.json"]
 alwaysApply: true
 ---
 
-# Reglas para Commits de Actualización de Versión
+# Reglas para Commits de Actualización de Versión con JIRA
 
 Cuando estás realizando un commit que actualiza la versión del proyecto:
 
@@ -13,8 +13,10 @@ Cuando estás realizando un commit que actualiza la versión del proyecto:
 El mensaje de commit debe seguir este formato:
 
 ```
-chore(release): preparar versión X.Y.Z
+YA-<número> - chore(release): preparar versión X.Y.Z
 ```
+
+Donde YA-<número> es el ticket de JIRA asociado a la actualización de versión.
 
 ## Proceso de Actualización
 
@@ -23,6 +25,7 @@ chore(release): preparar versión X.Y.Z
    - Cambia `[Unreleased]` a `[X.Y.Z] - YYYY-MM-DD` (fecha actual)
    - Crea una nueva sección vacía `[Unreleased]` con las categorías estándar
    - Actualiza los enlaces de comparación al final del documento
+   - Asegúrate de incluir referencias a tickets de JIRA en las entradas
 
 ## Ejemplo de Cambios en el Changelog
 
@@ -38,7 +41,8 @@ chore(release): preparar versión X.Y.Z
 +
 + ## [0.2.0] - 2025-05-15
   ### Añadido
-  - Implementada integración básica de Three.js
+  - [YA-5] Implementada integración básica de Three.js para experiencias visuales
+  - [YA-9] Añadido sistema de navegación intuitivo entre secciones
 ```
 
 ## Enlaces de comparación
@@ -55,7 +59,7 @@ Actualiza los enlaces al final del documento:
 
 - Solo incluye cambios significativos que afecten a los usuarios
 - Agrupa cambios relacionados para que el changelog sea claro y legible
-- Evita duplicar información ya presente en los mensajes de commit
+- Incluye las referencias a los tickets de JIRA [YA-xx] al inicio de cada entrada
 - Asegúrate de que el número de versión sigue el versionamiento semántico:
 
   - MAJOR: Cambios incompatibles
