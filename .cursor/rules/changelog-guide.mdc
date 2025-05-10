@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: true
----
----
 description: Reglas para mantener el CHANGELOG.md actualizado
 globs: ["CHANGELOG.md"]
 alwaysApply: true

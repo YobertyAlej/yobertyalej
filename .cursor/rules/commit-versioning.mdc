@@ -1,12 +1,7 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Reglas para commits que actualizan la versión y el changelog
 globs: ["CHANGELOG.md", "package.json"]
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Reglas para Commits de Actualización de Versión
