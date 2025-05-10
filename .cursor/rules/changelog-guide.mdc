@@ -1,0 +1,83 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Reglas para mantener el CHANGELOG.md actualizado
+globs: ["CHANGELOG.md"]
+alwaysApply: true
+---
+
+# Reglas para mantener el CHANGELOG
+
+Cuando estás modificando el archivo CHANGELOG.md, asegúrate de seguir estas reglas:
+
+## Estructura General
+
+- Mantén la estructura: [Unreleased] seguido de versiones en orden descendente
+- Cada versión debe tener una sección con el formato [X.Y.Z] - YYYY-MM-DD
+- Agrupa los cambios bajo las categorías: Añadido, Cambiado, Eliminado, Corregido, Seguridad, Experimental
+
+## Formato de Entradas
+
+- Escribe cada entrada como un único ítem de lista con guión (-)
+- Comienza con un verbo en participio (Añadido, Mejorado, Corregido, etc.)
+- Sé específico pero conciso, enfocándote en el impacto para el usuario
+- Incluye referencias a issues o PRs cuando sea relevante (#123)
+
+## Actualizaciones de Versión
+
+Cuando estés preparando una actualización de versión:
+
+1. Mueve todos los cambios de [Unreleased] a una nueva sección con el número de versión
+2. Añade la fecha actual en formato YYYY-MM-DD
+3. Crea una nueva sección [Unreleased] vacía
+4. Actualiza los enlaces de comparación al final del documento
+
+## Ejemplo de entrada correcta para nueva versión
+
+```markdown
+## [0.2.0] - 2025-05-15
+### Añadido
+- Implementada integración básica de Three.js para experiencias visuales
+- Añadido sistema de navegación intuitivo entre secciones
+
+### Cambiado
+- Mejorada la adaptabilidad para dispositivos móviles
+- Refinadas las transiciones entre páginas
+
+### Corregido
+- Solucionado problema de carga en navegadores Safari
+
+## Ejemplo de actualización de enlaces
+
+[Unreleased]: https://github.com/username/portfolio/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/username/portfolio/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/username/portfolio/releases/tag/v0.1.0
+
+Recuerda que el Changelog es una herramienta de comunicación para usuarios, no un registro de commits. Céntrate en los cambios relevantes desde la perspectiva del usuario.
+
+# Reglas de Cursor para Commits que Actualizan Versiones
+
+Y este archivo `.cursor/rules/version-commits.mdc` para ayudar con los commits que actualizan versiones:
+
+```mdc
+---
+description: Reglas para commits que actualizan la versión y el changelog
+globs: ["CHANGELOG.md", "package.json"]
+alwaysApply: false
+---
+
+# Reglas para Commits de Actualización de Versión
+
+Cuando estás realizando un commit que actualiza la versión del proyecto:
+
+## Formato del Commit
+
+El mensaje de commit debe seguir este formato:
+
+
+
+
+
