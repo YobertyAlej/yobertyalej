@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Aquí puedes agregar estilos adicionales si lo necesitas */
+.dark {
+  color-scheme: dark;
+}
+
+:root {
+  --radius: 0.5rem;
+}
+
+@layer base {
+  body {
+    @apply bg-[#ffffff] text-[#000000] dark:bg-gray-900 dark:text-white;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
