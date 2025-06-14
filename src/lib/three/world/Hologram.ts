@@ -11,8 +11,8 @@ export class Hologram {
   private animate: boolean = true
   private started: boolean = false
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.scene = this.experience.scene
     this.resources = this.experience.resources
     this.time = this.experience.time

@@ -14,16 +14,16 @@ export class World {
   private materials?: Materials
   private environment?: Environment
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.scene = this.experience.scene
     this.resources = this.experience.resources
 
     // Initialize environment first (lights)
-    this.environment = new Environment()
+    this.environment = new Environment(this.experience)
 
     // Initialize materials and wait for them to be ready
-    this.materials = new Materials()
+    this.materials = new Materials(this.experience)
 
     // Wait for resources to be ready
     this.resources.on('ready', () => {
@@ -38,8 +38,8 @@ export class World {
 
   private setupWorldComponents() {
     // Setup world components after materials are ready
-    this.ramenShop = new RamenShop()
-    this.hologram = new Hologram()
+    this.ramenShop = new RamenShop(this.experience)
+    this.hologram = new Hologram(this.experience)
     
     console.log('🎉 Complete Ramen Shop scene loaded!')
     
@@ -53,6 +53,9 @@ export class World {
   }
 
   update() {
+    if (this.ramenShop) {
+      this.ramenShop.update()
+    }
     if (this.hologram) {
       this.hologram.update()
     }

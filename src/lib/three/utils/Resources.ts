@@ -36,10 +36,10 @@ export default class Resources extends EventEmitter {
   public carousel2: THREE.Texture[] = []
   private loaders!: Loaders
 
-  constructor(sources: Source[]) {
+  constructor(experience: Experience, sources: Source[]) {
     super()
 
-    this.experience = new Experience()
+    this.experience = experience
     this.sources = sources
     this.renderer = this.experience.renderer.instance
 

@@ -26,11 +26,11 @@ export class Materials {
   public neonGreenMaterial?: THREE.MeshBasicMaterial
 
   // Baked texture materials
-  public ramenShopMaterial?: THREE.MeshBasicMaterial
-  public machinesMaterial?: THREE.MeshBasicMaterial
-  public floorMaterial?: THREE.MeshBasicMaterial
-  public miscMaterial?: THREE.MeshBasicMaterial
-  public graphicsMaterial?: THREE.MeshBasicMaterial
+  public ramenShopMaterial?: THREE.MeshStandardMaterial
+  public machinesMaterial?: THREE.MeshStandardMaterial
+  public floorMaterial?: THREE.MeshStandardMaterial
+  public miscMaterial?: THREE.MeshStandardMaterial
+  public graphicsMaterial?: THREE.MeshStandardMaterial
 
   // Matcap materials
   public dishMatcapMaterial?: THREE.MeshMatcapMaterial
@@ -39,8 +39,8 @@ export class Materials {
   // Shader materials
   public hologramBaseMaterial?: THREE.Material
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.scene = this.experience.scene
     this.resources = this.experience.resources
 
@@ -92,20 +92,20 @@ export class Materials {
       console.warn('⚠️ Missing textures:', missingTextures)
     }
     
-    // Map baked textures
-    this.ramenShopMaterial = new THREE.MeshBasicMaterial({ 
+    // Map baked textures using MeshStandardMaterial to react to light
+    this.ramenShopMaterial = new THREE.MeshStandardMaterial({ 
       map: this.resources.items.ramenShopBakedTexture 
     })
-    this.machinesMaterial = new THREE.MeshBasicMaterial({ 
+    this.machinesMaterial = new THREE.MeshStandardMaterial({ 
       map: this.resources.items.machinesBakedTexture 
     })
-    this.floorMaterial = new THREE.MeshBasicMaterial({ 
+    this.floorMaterial = new THREE.MeshStandardMaterial({ 
       map: this.resources.items.floorBakedTexture 
     })
-    this.miscMaterial = new THREE.MeshBasicMaterial({ 
+    this.miscMaterial = new THREE.MeshStandardMaterial({ 
       map: this.resources.items.miscBakedTexture 
     })
-    this.graphicsMaterial = new THREE.MeshBasicMaterial({ 
+    this.graphicsMaterial = new THREE.MeshStandardMaterial({ 
       map: this.resources.items.graphicsBakedTexture 
     })
 

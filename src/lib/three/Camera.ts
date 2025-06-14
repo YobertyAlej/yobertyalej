@@ -12,8 +12,8 @@ export default class Camera {
   public controls!: OrbitControls
   public config: any
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene
     this.canvas = this.experience.canvas
@@ -90,6 +90,11 @@ export default class Camera {
 
   update(): void {
     this.controls.update()
+  }
+
+  destroy() {
+    this.controls.dispose()
+    console.log('🚮 Camera controls disposed')
   }
 
   // Transition methods from boilerplate

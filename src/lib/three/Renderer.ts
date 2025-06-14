@@ -2,15 +2,15 @@ import * as THREE from 'three'
 import Experience from './Experience'
 
 export default class Renderer {
+  public experience: Experience
+  public canvas: HTMLCanvasElement
+  public sizes: any
+  public scene: THREE.Scene
+  public camera: any
   public instance!: THREE.WebGLRenderer
-  private experience: Experience
-  private canvas: HTMLCanvasElement
-  private sizes: any
-  private scene: THREE.Scene
-  private camera: any
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.canvas = this.experience.canvas
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene

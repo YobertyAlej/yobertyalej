@@ -4,8 +4,8 @@ export default class Sounds {
   private experience: Experience
   private sounds: { [key: string]: HTMLAudioElement } = {}
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     
     this.setupSounds()
     console.log('🔊 Sounds system initialized')

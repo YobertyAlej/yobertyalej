@@ -40,8 +40,8 @@ export class RamenShop {
   private sideScreen?: THREE.Object3D
   private arcadeScreen?: THREE.Object3D
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.scene = this.experience.scene
     this.resources = this.experience.resources
     this.materials = this.experience.world.getMaterials()!
@@ -157,6 +157,15 @@ export class RamenShop {
       })
     } else {
       console.error('❌ Cannot add model to scene - model is undefined')
+    }
+  }
+
+  update() {
+    // Animate fans if they exist
+    if (this.fan1 && this.fan2) {
+      const elapsedTime = this.experience.time.elapsed
+      this.fan1.rotation.y = elapsedTime * 0.005
+      this.fan2.rotation.y = elapsedTime * 0.005
     }
   }
 
