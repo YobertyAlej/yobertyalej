@@ -22,19 +22,14 @@ export default class Renderer {
   private setInstance() {
     this.instance = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      powerPreference: 'high-performance',
-      antialias: true,
-      alpha: true
+      powerPreference: 'high-performance'
     })
 
     this.instance.setSize(this.sizes.width, this.sizes.height)
     this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     this.instance.outputColorSpace = THREE.SRGBColorSpace
-    this.instance.toneMapping = THREE.CineonToneMapping
-    this.instance.toneMappingExposure = 1.75
-    this.instance.shadowMap.enabled = true
-    this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-    this.instance.setClearColor('#000000', 0) // Transparent background
+    
+    console.log('🎨 Renderer configured with simplified settings')
   }
 
   public resize() {

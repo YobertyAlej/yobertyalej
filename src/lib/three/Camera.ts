@@ -4,13 +4,13 @@ import gsap from 'gsap'
 import Experience from './Experience'
 
 export default class Camera {
+  public experience: Experience
+  public sizes: any
+  public scene: THREE.Scene
+  public canvas: HTMLCanvasElement
   public instance!: THREE.PerspectiveCamera
   public controls!: OrbitControls
-  private experience: Experience
-  private config: any
-  private sizes: any
-  private scene: THREE.Scene
-  private canvas: HTMLCanvasElement
+  public config: any
 
   constructor() {
     this.experience = new Experience()
@@ -21,47 +21,74 @@ export default class Camera {
 
     this.setInstance()
     this.setControls()
-    this.setCamAngles()
   }
 
-  private setInstance() {
+  private setInstance(): void {
     this.instance = new THREE.PerspectiveCamera(
-      75,
+      35,
       this.sizes.width / this.sizes.height,
-      0.4,
-      50
+      0.1,
+      100
     )
-    this.instance.position.set(15.9, 6.8, -11.4)
+    
+    // Closer position for debugging
+    this.instance.position.set(8, 3, 7)
+    
     this.scene.add(this.instance)
+    
+    console.log('📷 Camera positioned for BALANCED scale view')
+    console.log(`📍 Camera position: (8, 3, 7) - closer for debugging`)
   }
 
-  private setControls() {
+  private setControls(): void {
     this.controls = new OrbitControls(this.instance, this.canvas)
+    
+    // Target center of the ramen shop
+    this.controls.target.set(0, 0, -1)
+    
     this.controls.enableDamping = true
+    this.controls.dampingFactor = 0.05
     this.controls.enablePan = false
     this.controls.rotateSpeed = 1.2
     this.controls.zoomSpeed = 0.8
-    this.controls.target.z = -1
-    this.controls.enableRotate = false
-    this.controls.enableZoom = false
-  }
-
-  private setCamAngles() {
-    // Configuraciones de cámara para diferentes vistas
-    this.controls.minDistance = 7
-    this.controls.maxDistance = 16
-    this.controls.minAzimuthAngle = 0
+    
+    // Distance limits optimized for the scene
+    this.controls.minDistance = 3
+    this.controls.maxDistance = 20
+    
+    // Angle limits to keep focus on the shop
+    this.controls.minAzimuthAngle = 0 
     this.controls.maxAzimuthAngle = Math.PI * 1.9999
     this.controls.minPolarAngle = Math.PI * 0.2
-    this.controls.maxPolarAngle = Math.PI * 0.55
+    this.controls.maxPolarAngle = Math.PI * 0.65
+    
+    // Enable controls
+    this.controls.enableRotate = true
+    this.controls.enableZoom = true
+    
+    console.log('🎮 Camera controls ENABLED with optimized settings!')
+    console.log('📐 Camera angles configured for perfect ramen shop view')
   }
 
-  public resize() {
+  // Method to unlock camera for free exploration (debug mode)
+  unlockCamera(): void {
+    this.controls.maxDistance = 30
+    this.controls.minDistance = 0
+    this.controls.minAzimuthAngle = 0
+    this.controls.maxAzimuthAngle = Math.PI * 1.999
+    this.controls.minPolarAngle = 0
+    this.controls.maxPolarAngle = Math.PI
+    this.controls.enablePan = true
+    
+    console.log('🔓 Camera unlocked for free exploration!')
+  }
+
+  resize(): void {
     this.instance.aspect = this.sizes.width / this.sizes.height
     this.instance.updateProjectionMatrix()
   }
 
-  public update() {
+  update(): void {
     this.controls.update()
   }
 
@@ -92,7 +119,7 @@ export default class Camera {
   }
 
   public async transitionToProjects(duration: number = 1.5) {
-    const projectsDistance = this.config.vertical ? 4.6 : 4.2
+    const projectsDistance = this.experience.config.vertical ? 4.6 : 4.2
     
     this.controls.enableRotate = false
     this.controls.enableZoom = false

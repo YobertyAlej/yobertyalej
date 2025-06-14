@@ -1,14 +1,14 @@
-import { ThreeScene } from '@/components/three/ThreeScene'
+import { ThreeCanvas } from '@/components/three/ThreeCanvas'
 
 export default function Home() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Three.js Background */}
-      <ThreeScene className="fixed inset-0 -z-10" />
+      <ThreeCanvas className="fixed inset-0 -z-10" />
       
       {/* UI Content con glassmorphism */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen py-16">
-        <div className="bg-white/10 dark:bg-gray-900/10 backdrop-blur-md rounded-xl p-8 border border-white/20 max-w-4xl mx-auto">
+        {/* <div className="bg-white/5 dark:bg-gray-900/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-4xl mx-auto">
           <h1 className="mb-6 text-4xl font-bold text-center sm:text-5xl md:text-6xl">
             Portfolio <span className="text-blue-500">Iterativo</span>
           </h1>
@@ -37,8 +37,11 @@ export default function Home() {
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Versión: 1.0.0 - Proyecto con experiencias 3D
             </p>
+            <p className="text-xs text-cyan-400 mt-2 animate-pulse">
+              🎮 ¡Controles activos! Arrastra para rotar • Rueda para zoom • F12 → Console → unlockCamera()
+            </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -46,7 +49,7 @@ export default function Home() {
 
 function SkillCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="p-6 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer">
+    <div className="p-6 rounded-lg bg-white/3 backdrop-blur-sm border border-white/5 hover:bg-white/8 transition-all duration-300 cursor-pointer">
       <h3 className="mb-3 text-xl font-semibold">{title}</h3>
       <p className="text-gray-600 dark:text-gray-300">{description}</p>
     </div>

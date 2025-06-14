@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import Experience from '../Experience'
 
-export default class Environment {
+export class Environment {
   private experience: Experience
   private scene: THREE.Scene
   private resources: any
@@ -14,24 +14,26 @@ export default class Environment {
     this.scene = this.experience.scene
     this.resources = this.experience.resources
 
-    this.setAmbientLight()
-    this.setDirectionalLight()
+    this.setupLighting()
+    console.log('🌍 Environment initialized with lighting')
   }
 
-  private setAmbientLight() {
-    this.ambientLight = new THREE.AmbientLight('#b9d5ff', 0.4)
-    this.scene.add(this.ambientLight)
-  }
-
-  private setDirectionalLight() {
-    this.directionalLight = new THREE.DirectionalLight('#b9d5ff', 1)
-    this.directionalLight.castShadow = true
-    this.directionalLight.shadow.camera.far = 15
-    this.directionalLight.shadow.camera.left = -7
-    this.directionalLight.shadow.camera.top = 7
-    this.directionalLight.shadow.camera.right = 7
-    this.directionalLight.shadow.camera.bottom = -7
-    this.directionalLight.position.set(5, 5, 5)
-    this.scene.add(this.directionalLight)
+  private setupLighting() {
+    // Ambient light for overall illumination
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
+    this.scene.add(ambientLight)
+    
+    // Directional light for definition
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+    directionalLight.position.set(10, 10, 5)
+    directionalLight.castShadow = true
+    this.scene.add(directionalLight)
+    
+    // Additional light from the other side
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4)
+    directionalLight2.position.set(-10, 5, -5)
+    this.scene.add(directionalLight2)
+    
+    console.log('💡 Enhanced lighting setup complete')
   }
 } 

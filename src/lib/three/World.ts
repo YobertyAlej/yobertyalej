@@ -1,86 +1,67 @@
 import * as THREE from 'three'
 import Experience from './Experience'
+import { RamenShop } from './world/RamenShop'
+import { Hologram } from './world/Hologram'
+import { Materials } from './world/Materials'
+import { Environment } from './world/Environment'
 
-export default class World {
+export class World {
   private experience: Experience
   private scene: THREE.Scene
   private resources: any
-
-  // Demo objects
-  private testCube?: THREE.Mesh
-  private ambientLight?: THREE.AmbientLight
-  private directionalLight?: THREE.DirectionalLight
+  private ramenShop?: RamenShop
+  private hologram?: Hologram
+  private materials?: Materials
+  private environment?: Environment
 
   constructor() {
     this.experience = new Experience()
     this.scene = this.experience.scene
     this.resources = this.experience.resources
 
-    // Wait for resources to be ready (even if empty)
+    // Initialize environment first (lights)
+    this.environment = new Environment()
+
+    // Initialize materials and wait for them to be ready
+    this.materials = new Materials()
+
+    // Wait for resources to be ready
     this.resources.on('ready', () => {
-      this.setupLights()
-      this.setupTestObjects()
+      console.log('🏪 Setting up complete Ramen Shop scene...')
+      
+      // Small delay to ensure materials are fully processed
+      setTimeout(() => {
+        this.setupWorldComponents()
+      }, 50)
     })
+  }
 
-    // If no resources to load, setup immediately
-    if (this.resources.toLoad === 0) {
-      this.setupLights()
-      this.setupTestObjects()
+  private setupWorldComponents() {
+    // Setup world components after materials are ready
+    this.ramenShop = new RamenShop()
+    this.hologram = new Hologram()
+    
+    console.log('🎉 Complete Ramen Shop scene loaded!')
+    
+    // Debug scene after everything is loaded
+    setTimeout(() => {
+      console.log('🔍 Final scene check - Children count:', this.scene.children.length)
+      this.scene.children.forEach((child, index) => {
+        console.log(`  ${index}: ${child.type} - ${child.name || 'unnamed'}`)
+      })
+    }, 100)
+  }
+
+  update() {
+    if (this.hologram) {
+      this.hologram.update()
+    }
+    if (this.materials) {
+      this.materials.update()
     }
   }
 
-  private setupLights() {
-    // Ambient light
-    this.ambientLight = new THREE.AmbientLight('#b9d5ff', 0.4)
-    this.scene.add(this.ambientLight)
-
-    // Directional light
-    this.directionalLight = new THREE.DirectionalLight('#b9d5ff', 1)
-    this.directionalLight.castShadow = true
-    this.directionalLight.shadow.camera.far = 15
-    this.directionalLight.shadow.camera.left = -7
-    this.directionalLight.shadow.camera.top = 7
-    this.directionalLight.shadow.camera.right = 7
-    this.directionalLight.shadow.camera.bottom = -7
-    this.directionalLight.position.set(5, 5, 5)
-    this.scene.add(this.directionalLight)
-  }
-
-  private setupTestObjects() {
-    // Create a simple rotating cube for testing
-    const geometry = new THREE.BoxGeometry(2, 2, 2)
-    const material = new THREE.MeshStandardMaterial({ 
-      color: '#3b82f6',
-      metalness: 0.3,
-      roughness: 0.7
-    })
-    
-    this.testCube = new THREE.Mesh(geometry, material)
-    this.testCube.castShadow = true
-    this.testCube.receiveShadow = true
-    this.testCube.position.set(0, 1, 0)
-    this.scene.add(this.testCube)
-
-    // Add a ground plane
-    const groundGeometry = new THREE.PlaneGeometry(20, 20)
-    const groundMaterial = new THREE.MeshStandardMaterial({ 
-      color: '#404040',
-      metalness: 0,
-      roughness: 1
-    })
-    
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial)
-    ground.receiveShadow = true
-    ground.rotation.x = -Math.PI * 0.5
-    this.scene.add(ground)
-  }
-
-  public update() {
-    // Animate test cube
-    if (this.testCube) {
-      this.testCube.rotation.x += 0.01
-      this.testCube.rotation.y += 0.015
-      this.testCube.position.y = 1 + Math.sin(this.experience.time.elapsed * 0.001) * 0.5
-    }
+  getMaterials() {
+    return this.materials
   }
 } 
