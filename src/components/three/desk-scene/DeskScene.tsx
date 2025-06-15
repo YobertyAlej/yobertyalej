@@ -38,10 +38,8 @@ export default function DeskScene() {
         <CameraControls 
           minPolarAngle={Math.PI / 8} 
           maxPolarAngle={Math.PI / 2.2}
-          minAzimuthAngle={-Math.PI / 3}
-          maxAzimuthAngle={Math.PI / 3}
           minDistance={5}
-          maxDistance={50}
+          maxDistance={80}
         />
         <ambientLight intensity={Math.PI / 2} />
         <group scale={20} position={[5, -11, -5]}>
@@ -54,8 +52,8 @@ export default function DeskScene() {
         <Environment preset="city" />
         <PerspectiveCamera 
           makeDefault 
-          position={[25, 25, 25]} 
-          fov={60}
+          position={[30, 20, 60]} 
+          fov={55}
           near={0.1}
           far={1000}
         />
