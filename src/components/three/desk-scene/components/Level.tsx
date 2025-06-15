@@ -7,10 +7,17 @@ import { useEffect, useRef } from 'react'
 
 interface LevelProps {
   onArcadeClick?: () => void
+  onBlueBoxClick?: () => void
   interactiveBoxPosition?: { x: number; y: number; z: number }
+  blueBoxPosition?: { x: number; y: number; z: number }
 }
 
-export function Level({ onArcadeClick, interactiveBoxPosition = { x: 0.2, y: 0.8, z: 0.3 } }: LevelProps) {
+export function Level({ 
+  onArcadeClick, 
+  onBlueBoxClick,
+  interactiveBoxPosition = { x: 0.2, y: 0.8, z: 0.3 },
+  blueBoxPosition = { x: 0.5, y: 0.8, z: -0.3 }
+}: LevelProps) {
   const { nodes } = useDeskModel()
   const groupRef = useRef<THREE.Group>(null)
   
@@ -25,6 +32,14 @@ export function Level({ onArcadeClick, interactiveBoxPosition = { x: 0.2, y: 0.8
     event.stopPropagation()
     if (onArcadeClick) {
       onArcadeClick()
+    }
+  }
+
+  // Manejador para la caja azul
+  const handleBlueBoxClick = (event: any) => {
+    event.stopPropagation()
+    if (onBlueBoxClick) {
+      onBlueBoxClick()
     }
   }
   
@@ -57,6 +72,28 @@ export function Level({ onArcadeClick, interactiveBoxPosition = { x: 0.2, y: 0.8
           color="transparent" 
           transparent 
           opacity={0.0}
+        />
+      </mesh>
+
+      {/* Nueva caja azul interactiva */}
+      {/* Posicionada dinámicamente usando lil-gui */}
+      <mesh
+        position={[blueBoxPosition.x, blueBoxPosition.y, blueBoxPosition.z]}
+        onClick={handleBlueBoxClick}
+        onPointerOver={(event: any) => {
+          event.stopPropagation()
+          document.body.style.cursor = 'pointer'
+        }}
+        onPointerOut={(event: any) => {
+          event.stopPropagation()
+          document.body.style.cursor = 'auto'
+        }}
+      >
+        <boxGeometry args={[0.60, 0.4, 0.1]} />
+        <meshStandardMaterial 
+          color="blue" 
+          transparent 
+          opacity={0}
         />
       </mesh>
     </>

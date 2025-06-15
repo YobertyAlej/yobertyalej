@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { GUI } from 'lil-gui'
 import { CameraControls } from '@react-three/drei'
+import * as THREE from 'three'
 
 interface CameraInfo {
   position: { x: number; y: number; z: number }
@@ -14,10 +15,18 @@ interface DebugControls {
     y: number
     z: number
   }
+  // Posición de la caja azul (controlable)
+  blueBox: {
+    x: number
+    y: number
+    z: number
+  }
   // Información actual de la cámara (solo lectura)
   currentCamera: CameraInfo
   // Valores guardados para arcade
   savedArcadeCamera: CameraInfo
+  // Valores guardados para caja azul
+  savedBlueBoxCamera: CameraInfo
   // Valores guardados para default
   savedDefaultCamera: CameraInfo
 }
@@ -25,24 +34,33 @@ interface DebugControls {
 interface UseDebugControlsProps {
   cameraControlsRef: React.RefObject<CameraControls>
   onInteractiveBoxChange: (position: { x: number; y: number; z: number }) => void
+  onBlueBoxChange: (position: { x: number; y: number; z: number }) => void
   onSaveArcadeCamera: (camera: CameraInfo) => void
+  onSaveBlueBoxCamera: (camera: CameraInfo) => void
   onSaveDefaultCamera: (camera: CameraInfo) => void
 }
 
 export function useDebugControls({
   cameraControlsRef,
   onInteractiveBoxChange,
+  onBlueBoxChange,
   onSaveArcadeCamera,
+  onSaveBlueBoxCamera,
   onSaveDefaultCamera
 }: UseDebugControlsProps) {
   const guiRef = useRef<GUI | null>(null)
-  const animationFrameRef = useRef<number>()
+  const animationFrameRef = useRef<number | undefined>(undefined)
   
   const controls: DebugControls = {
     interactiveBox: {
       x: 0.2,
       y: 0.8,
       z: 0.3
+    },
+    blueBox: {
+      x: 0.5,
+      y: 0.8,
+      z: -0.3
     },
     currentCamera: {
       position: { x: 0, y: 0, z: 0 },
@@ -51,6 +69,10 @@ export function useDebugControls({
     savedArcadeCamera: {
       position: { x: 25, y: 15, z: 45 },
       target: { x: 5, y: -5, z: -5 }
+    },
+    savedBlueBoxCamera: {
+      position: { x: 7.1, y: 6.94, z: -12.84 },
+      target: { x: 7.65, y: 6.17, z: -7.54 }
     },
     savedDefaultCamera: {
       position: { x: 30, y: 20, z: 60 },
@@ -143,7 +165,8 @@ export function useDebugControls({
     const updateCameraInfo = () => {
       if (cameraControlsRef.current) {
         const camera = cameraControlsRef.current.camera
-        const target = cameraControlsRef.current.getTarget()
+        const target = new THREE.Vector3()
+        cameraControlsRef.current.getTarget(target)
         
         controls.currentCamera.position.x = Math.round(camera.position.x * 100) / 100
         controls.currentCamera.position.y = Math.round(camera.position.y * 100) / 100

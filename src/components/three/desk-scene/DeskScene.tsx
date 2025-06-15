@@ -11,7 +11,7 @@ import { Cactus } from './components/Cactus'
 import { InteractiveBox } from './components/InteractiveBox'
 import { useDebugControls } from './hooks/useDebugControls'
 
-type ViewState = 'default' | 'arcade'
+type ViewState = 'default' | 'arcade' | 'blueBox'
 
 export default function DeskScene() {
   const controlsRef = useRef<CameraControls>(null)
@@ -19,20 +19,27 @@ export default function DeskScene() {
   
   // Estados para los controles de debugging
   const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.54, y: 0.60, z: 0.65 })
+  const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0 })
   const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
     position: { x: 3.3, y: 9.11, z: 7.82 },
     target: { x: -6.08, y: 5.9, z: 7.6 }
   })
+  const [blueBoxCameraSettings, setBlueBoxCameraSettings] = useState({
+    position: { x: 7.1, y: 6.94, z: -12.84 },
+    target: { x: 7.65, y: 6.17, z: -7.54 }
+  })
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
-    position: { x: 30, y: 20, z: 60 },
-    target: { x: 0, y: 0, z: 0 }
+    position: { x: 47, y: 21, z: 49 },
+    target: { x: 4.5, y: 2, z:-2.92 }
   })
 
   // Configurar controles de debugging
   useDebugControls({
     cameraControlsRef: controlsRef,
     onInteractiveBoxChange: setInteractiveBoxPosition,
+    onBlueBoxChange: setBlueBoxPosition,
     onSaveArcadeCamera: setArcadeCameraSettings,
+    onSaveBlueBoxCamera: setBlueBoxCameraSettings,
     onSaveDefaultCamera: setDefaultCameraSettings
   })
 
@@ -51,6 +58,17 @@ export default function DeskScene() {
         arcadeCameraSettings.target.z,
         true
       )
+    } else if (view === 'blueBox') {
+      // Usar configuración para la vista de la caja azul
+      controlsRef.current.setLookAt(
+        blueBoxCameraSettings.position.x, 
+        blueBoxCameraSettings.position.y, 
+        blueBoxCameraSettings.position.z,
+        blueBoxCameraSettings.target.x, 
+        blueBoxCameraSettings.target.y, 
+        blueBoxCameraSettings.target.z,
+        true
+      )
     } else if (view === 'default') {
       // Usar configuración guardada para la vista por defecto
       controlsRef.current.setLookAt(
@@ -63,7 +81,7 @@ export default function DeskScene() {
         true
       )
     }
-  }, [view, arcadeCameraSettings, defaultCameraSettings])
+  }, [view, arcadeCameraSettings, blueBoxCameraSettings, defaultCameraSettings])
 
   return (
     <div 
@@ -133,7 +151,9 @@ export default function DeskScene() {
         <group scale={20} position={[5, -11, -5]}>
           <Level 
             onArcadeClick={() => setView('arcade')} 
+            onBlueBoxClick={() => setView('blueBox')}
             interactiveBoxPosition={interactiveBoxPosition}
+            blueBoxPosition={blueBoxPosition}
           />
           <Sudo />
           <Camera />
@@ -143,7 +163,7 @@ export default function DeskScene() {
         <Environment preset="city" />
         <PerspectiveCamera 
           makeDefault 
-          position={[30, 20, 60]} 
+          position={[defaultCameraSettings.position.x, defaultCameraSettings.position.y, defaultCameraSettings.position.z]} 
           fov={55}
           near={0.1}
           far={1000}
