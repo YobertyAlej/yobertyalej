@@ -67,11 +67,11 @@ export function Level({
           document.body.style.cursor = 'auto'
         }}
       >
-        <boxGeometry args={[0.5, 1, 0.6]} />
+        <boxGeometry args={[0.2, 1, 0.6]} />
         <meshStandardMaterial 
-          color="transparent" 
+          color="red" 
           transparent 
-          opacity={0.0}
+          opacity={0}
         />
       </mesh>
 
@@ -89,7 +89,7 @@ export function Level({
           document.body.style.cursor = 'auto'
         }}
       >
-        <boxGeometry args={[0.60, 0.4, 0.1]} />
+        <boxGeometry args={[0.5, 0.4, 0.03]} />
         <meshStandardMaterial 
           color="blue" 
           transparent 

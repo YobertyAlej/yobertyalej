@@ -9,6 +9,7 @@ import { Sudo } from './components/Sudo'
 import { Camera } from './components/Camera'
 import { Cactus } from './components/Cactus'
 import { InteractiveBox } from './components/InteractiveBox'
+import { WebScreen } from './components/WebScreen'
 import { useDebugControls } from './hooks/useDebugControls'
 
 type ViewState = 'default' | 'arcade' | 'blueBox'
@@ -16,17 +17,18 @@ type ViewState = 'default' | 'arcade' | 'blueBox'
 export default function DeskScene() {
   const controlsRef = useRef<CameraControls>(null)
   const [view, setView] = useState<ViewState>('default')
+  const [activeScreen, setActiveScreen] = useState<string | null>(null)
   
   // Estados para los controles de debugging
-  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.54, y: 0.60, z: 0.65 })
-  const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0 })
+  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.595, y: 0.60, z: 0.65 })
+  const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.05 })
   const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
-    position: { x: 3.3, y: 9.11, z: 7.82 },
-    target: { x: -6.08, y: 5.9, z: 7.6 }
+    position: { x: 5.76, y: 7.37, z: 7.55 },
+    target: { x: -5.8, y: 5.21, z: 7.6 }
   })
   const [blueBoxCameraSettings, setBlueBoxCameraSettings] = useState({
-    position: { x: 7.1, y: 6.94, z: -12.84 },
-    target: { x: 7.65, y: 6.17, z: -7.54 }
+    position: { x: 9.21, y: 6.29, z: -14.52 },
+    target: { x: 9.14, y: 4.19, z: -2.04 }
   })
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
     position: { x: 47, y: 21, z: 49 },
@@ -58,6 +60,8 @@ export default function DeskScene() {
         arcadeCameraSettings.target.z,
         true
       )
+      // Activar la pantalla de arcade
+      setActiveScreen('arcade')
     } else if (view === 'blueBox') {
       // Usar configuración para la vista de la caja azul
       controlsRef.current.setLookAt(
@@ -69,6 +73,8 @@ export default function DeskScene() {
         blueBoxCameraSettings.target.z,
         true
       )
+      // Activar otra pantalla si es necesario
+      setActiveScreen('blueBox')
     } else if (view === 'default') {
       // Usar configuración guardada para la vista por defecto
       controlsRef.current.setLookAt(
@@ -80,6 +86,8 @@ export default function DeskScene() {
         defaultCameraSettings.target.z,
         true
       )
+      // Desactivar todas las pantallas en vista general
+      setActiveScreen(null)
     }
   }, [view, arcadeCameraSettings, blueBoxCameraSettings, defaultCameraSettings])
 
@@ -159,6 +167,29 @@ export default function DeskScene() {
           <Camera />
           <Cactus />
           <InteractiveBox position={[-0.8, 1.4, 0.4]} scale={0.15} />
+          
+          {/* Pantallas Web */}
+          <WebScreen
+            url="https://lidr-academy.github.io/AI4Devs-videogame/floodfill-YAG/index.html"
+            position={[-0.49, 0.84, 0.64]}
+            rotation={[0, 1.6, -0.0]}
+            scale={0.021}
+            width={821}
+            height={620}
+            isActive={activeScreen === 'arcade'}
+            tilt={-10}
+          />
+          
+          <WebScreen
+            url="https://yobertyalej.github.io/"
+            position={[0.213, 0.856, 0.009]}
+            rotation={[0, Math.PI, 0]}
+            scale={0.011}
+            width={1820}
+            height={870}
+            isActive={activeScreen === 'blueBox'}
+            tilt={-4.6}
+          />
         </group>
         <Environment preset="city" />
         <PerspectiveCamera 

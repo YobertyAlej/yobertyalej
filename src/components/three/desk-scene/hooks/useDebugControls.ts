@@ -97,6 +97,15 @@ export function useDebugControls({
     interactiveFolder.add(controls.interactiveBox, 'z', -2, 2, 0.01)
       .onChange(() => onInteractiveBoxChange(controls.interactiveBox))
 
+    // Controles para la caja azul (controlable)
+    const blueBoxFolder = gui.addFolder('Blue Box Position')
+    blueBoxFolder.add(controls.blueBox, 'x', -2, 2, 0.01)
+      .onChange(() => onBlueBoxChange(controls.blueBox))
+    blueBoxFolder.add(controls.blueBox, 'y', -2, 2, 0.01)
+      .onChange(() => onBlueBoxChange(controls.blueBox))
+    blueBoxFolder.add(controls.blueBox, 'z', -2, 2, 0.01)
+      .onChange(() => onBlueBoxChange(controls.blueBox))
+
     // Información actual de la cámara (solo lectura)
     const currentFolder = gui.addFolder('Current Camera (Live)')
     const currentPosFolder = currentFolder.addFolder('Position')
@@ -141,11 +150,23 @@ export function useDebugControls({
     }, 'saveAsDefault').name('💾 Save as Default View')
 
     actionsFolder.add({
+      saveAsBlueBox: () => {
+        const currentPos = { ...controls.currentCamera.position }
+        const currentTarget = { ...controls.currentCamera.target }
+        controls.savedBlueBoxCamera = { position: currentPos, target: currentTarget }
+        onSaveBlueBoxCamera(controls.savedBlueBoxCamera)
+        console.log('🔵 Saved Blue Box Camera:', controls.savedBlueBoxCamera)
+      }
+    }, 'saveAsBlueBox').name('💾 Save as Blue Box View')
+
+    actionsFolder.add({
       printAllValues: () => {
         console.log('=== CAMERA DEBUG VALUES ===')
         console.log('📦 Interactive Box:', controls.interactiveBox)
+        console.log('🔵 Blue Box:', controls.blueBox)
         console.log('📷 Current Camera:', controls.currentCamera)
         console.log('🎮 Saved Arcade Camera:', controls.savedArcadeCamera)
+        console.log('🔵 Saved Blue Box Camera:', controls.savedBlueBoxCamera)
         console.log('🏠 Saved Default Camera:', controls.savedDefaultCamera)
         console.log('============================')
         
@@ -154,6 +175,9 @@ export function useDebugControls({
         console.log(`// Arcade Camera Settings:`)
         console.log(`posX: ${controls.savedArcadeCamera.position.x}, posY: ${controls.savedArcadeCamera.position.y}, posZ: ${controls.savedArcadeCamera.position.z}`)
         console.log(`targetX: ${controls.savedArcadeCamera.target.x}, targetY: ${controls.savedArcadeCamera.target.y}, targetZ: ${controls.savedArcadeCamera.target.z}`)
+        console.log(`\n// Blue Box Camera Settings:`)
+        console.log(`posX: ${controls.savedBlueBoxCamera.position.x}, posY: ${controls.savedBlueBoxCamera.position.y}, posZ: ${controls.savedBlueBoxCamera.position.z}`)
+        console.log(`targetX: ${controls.savedBlueBoxCamera.target.x}, targetY: ${controls.savedBlueBoxCamera.target.y}, targetZ: ${controls.savedBlueBoxCamera.target.z}`)
         console.log(`\n// Default Camera Settings:`)
         console.log(`posX: ${controls.savedDefaultCamera.position.x}, posY: ${controls.savedDefaultCamera.position.y}, posZ: ${controls.savedDefaultCamera.position.z}`)
         console.log(`targetX: ${controls.savedDefaultCamera.target.x}, targetY: ${controls.savedDefaultCamera.target.y}, targetZ: ${controls.savedDefaultCamera.target.z}`)
@@ -191,7 +215,7 @@ export function useDebugControls({
         guiRef.current.destroy()
       }
     }
-  }, [cameraControlsRef, onInteractiveBoxChange, onSaveArcadeCamera, onSaveDefaultCamera])
+  }, [cameraControlsRef, onInteractiveBoxChange, onBlueBoxChange, onSaveArcadeCamera, onSaveBlueBoxCamera, onSaveDefaultCamera])
 
   return controls
 } 
