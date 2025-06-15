@@ -164,11 +164,18 @@ function Scene() {
       </Suspense>
       
       <OrbitControls 
-        target={[0, 0, -1]} 
-        enablePan={false} 
-        minDistance={3} 
-        maxDistance={20}
-        maxPolarAngle={Math.PI / 2}
+        target={[0, -0.5, 0]} 
+        enablePan={false}
+        enableRotate={true}
+        enableZoom={true}
+        rotateSpeed={1.2}
+        zoomSpeed={0.8}
+        minDistance={2} 
+        maxDistance={8}
+        minAzimuthAngle={-Math.PI * 0.3}
+        maxAzimuthAngle={Math.PI * 0.3}
+        minPolarAngle={Math.PI * 0.2}
+        maxPolarAngle={Math.PI * 0.7}
         enableDamping
         dampingFactor={0.05}
       />
@@ -178,15 +185,36 @@ function Scene() {
 
 export default function R3FScene() {
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div 
+      style={{ 
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw', 
+        height: '100vh',
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden'
+      }}
+    >
       <Canvas
-        camera={{ position: [8, 3, 7], fov: 45 }}
+        camera={{ 
+          position: [0, 1, 4], 
+          fov: 75,
+          near: 0.1,
+          far: 1000
+        }}
         shadows
         gl={{ 
           antialias: true,
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 2.0,
           outputColorSpace: THREE.SRGBColorSpace
+        }}
+        style={{
+          display: 'block',
+          width: '100%',
+          height: '100%'
         }}
       >
         <Scene />
