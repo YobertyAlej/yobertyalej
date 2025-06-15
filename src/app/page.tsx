@@ -1,13 +1,11 @@
-import { ThreeCanvas } from '@/components/three/ThreeCanvas'
-import R3FScene from '@/components/three/R3FScene'
+"use client"
+
+import { DeskScene } from '@/components/three/desk-scene'
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* Three.js Background (vanilla) */}
-      {/* <ThreeCanvas className="fixed inset-0 -z-10" /> */}
-      {/* R3F Scene (react-three-fiber) */}
-      <R3FScene />
+    <div className="relative w-full" style={{ backgroundColor: '#101828' }}>
+      <DeskScene />
     </div>
   );
 }
