@@ -52,11 +52,11 @@ export function Level({ onArcadeClick, interactiveBoxPosition = { x: 0.2, y: 0.8
           document.body.style.cursor = 'auto'
         }}
       >
-        <boxGeometry args={[0.3, 0.4, 0.2]} />
+        <boxGeometry args={[0.5, 1, 0.6]} />
         <meshStandardMaterial 
-          color="orange" 
+          color="transparent" 
           transparent 
-          opacity={0.3}
+          opacity={0.0}
         />
       </mesh>
     </>

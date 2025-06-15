@@ -18,14 +18,14 @@ export default function DeskScene() {
   const [view, setView] = useState<ViewState>('default')
   
   // Estados para los controles de debugging
-  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.3 })
+  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.54, y: 0.60, z: 0.65 })
   const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
-    position: { x: 25, y: 15, z: 45 },
-    target: { x: 5, y: -5, z: -5 }
+    position: { x: 3.3, y: 9.11, z: 7.82 },
+    target: { x: -6.08, y: 5.9, z: 7.6 }
   })
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
     position: { x: 30, y: 20, z: 60 },
-    target: { x: 5, y: -11, z: -5 }
+    target: { x: 0, y: 0, z: 0 }
   })
 
   // Configurar controles de debugging
