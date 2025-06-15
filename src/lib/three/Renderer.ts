@@ -2,15 +2,15 @@ import * as THREE from 'three'
 import Experience from './Experience'
 
 export default class Renderer {
+  public experience: Experience
+  public canvas: HTMLCanvasElement
+  public sizes: any
+  public scene: THREE.Scene
+  public camera: any
   public instance!: THREE.WebGLRenderer
-  private experience: Experience
-  private canvas: HTMLCanvasElement
-  private sizes: any
-  private scene: THREE.Scene
-  private camera: any
 
-  constructor() {
-    this.experience = new Experience()
+  constructor(experience: Experience) {
+    this.experience = experience
     this.canvas = this.experience.canvas
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene
@@ -22,19 +22,14 @@ export default class Renderer {
   private setInstance() {
     this.instance = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      powerPreference: 'high-performance',
-      antialias: true,
-      alpha: true
+      powerPreference: 'high-performance'
     })
 
     this.instance.setSize(this.sizes.width, this.sizes.height)
     this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     this.instance.outputColorSpace = THREE.SRGBColorSpace
-    this.instance.toneMapping = THREE.CineonToneMapping
-    this.instance.toneMappingExposure = 1.75
-    this.instance.shadowMap.enabled = true
-    this.instance.shadowMap.type = THREE.PCFSoftShadowMap
-    this.instance.setClearColor('#000000', 0) // Transparent background
+    
+    console.log('🎨 Renderer configured with simplified settings')
   }
 
   public resize() {

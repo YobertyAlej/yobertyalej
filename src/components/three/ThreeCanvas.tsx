@@ -52,6 +52,8 @@ export function ThreeCanvas({ className = '', style }: ThreeCanvasProps) {
         height: '100vh',
         outline: 'none',
         display: 'block',
+        zIndex: -10,
+        pointerEvents: 'auto',
         ...style
       }}
     />
