@@ -48,14 +48,30 @@ export default function DeskScene() {
   // Estados para los controles de debugging
   const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.595, y: 0.60, z: 0.65 })
   const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.05 })
-  const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
-    position: { x: 3.21, y: 12.08, z: 14.28 },
-    target: { x: -6.65, y: 10.42, z: 14.08 }
-  })
-  const [blueBoxCameraSettings, setBlueBoxCameraSettings] = useState({
-    position: { x: 4.82, y: 10.6, z: -12.41 },
-    target: { x: 4.67, y: 6.92, z: -2.18 }
-  })
+  // Configuraciones de cámara responsivas
+  const arcadeCameraSettings = useMemo(() => (
+    isMobile 
+      ? {
+          position: { x: 2.18, y: 7.08, z: 10.48 },
+          target: { x: -4, y: 6, z: 10 }
+        }
+      : {
+          position: { x: 3.21, y: 12.08, z: 14.28 },
+          target: { x: -6.65, y: 10.42, z: 14.08 }
+        }
+  ), [isMobile])
+  
+  const blueBoxCameraSettings = useMemo(() => (
+    isMobile 
+      ? {
+          position: { x: 3, y: 7, z: -8 },
+          target: { x: 3, y: 4, z: -1.5 }
+        }
+      : {
+          position: { x: 4.82, y: 10.6, z: -12.41 },
+          target: { x: 4.67, y: 6.92, z: -2.18 }
+        }
+  ), [isMobile])
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
     position: cameraInitialPosition,
     target: cameraInitialTarget
@@ -89,15 +105,15 @@ export default function DeskScene() {
     return () => clearTimeout(timer)
   }, [cameraInitialPosition, cameraInitialTarget])
 
-  // Configurar controles de debugging
-  useDebugControls({
-    cameraControlsRef: controlsRef,
-    onInteractiveBoxChange: setInteractiveBoxPosition,
-    onBlueBoxChange: setBlueBoxPosition,
-    onSaveArcadeCamera: setArcadeCameraSettings,
-    onSaveBlueBoxCamera: setBlueBoxCameraSettings,
-    onSaveDefaultCamera: setDefaultCameraSettings
-  })
+  // Configurar controles de debugging - DESHABILITADO
+  // useDebugControls({
+  //   cameraControlsRef: controlsRef,
+  //   onInteractiveBoxChange: setInteractiveBoxPosition,
+  //   onBlueBoxChange: setBlueBoxPosition,
+  //   onSaveArcadeCamera: () => {}, // Deshabilitado ya que ahora es responsivo
+  //   onSaveBlueBoxCamera: () => {}, // Deshabilitado ya que ahora es responsivo
+  //   onSaveDefaultCamera: setDefaultCameraSettings
+  // })
 
   // Manejar las transiciones de cámara
   useEffect(() => {

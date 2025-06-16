@@ -79,7 +79,7 @@ export function Header() {
               size="sm" 
               className="border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
             >
-              Versión 0.1.0
+              Versión 1.0.0
             </Button>
           </div>
 
@@ -146,7 +146,7 @@ export function Header() {
                   size="sm" 
                   className="w-full border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
                 >
-                  Versión 0.1.0
+                  Versión 1.0.0
                 </Button>
               </div>
             </nav>
