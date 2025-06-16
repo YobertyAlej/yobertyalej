@@ -77,6 +77,14 @@ create_release_directory() {
     log_step "Creando directorio de release: $release_dir"
     
     mkdir -p "$release_dir"
+    
+    # Verificar que el directorio se creó correctamente
+    if [[ ! -d "$release_dir" ]]; then
+        log_error "No se pudo crear el directorio de release: $release_dir"
+        exit 1
+    fi
+    
+    log_info "✅ Directorio de release creado: $release_dir"
     echo "$release_dir"
 }
 
@@ -112,8 +120,12 @@ extract_and_prepare() {
     
     # Extraer el tarball en el directorio de release
     log_info "📦 Extrayendo archivos a: $release_dir"
-    if ! tar -xzf "$deployment_file" -C "$release_dir"; then
+    
+    # Usar redirección para evitar conflictos con stdout
+    if ! tar -xzf "$deployment_file" -C "$release_dir" 2>/dev/null; then
         log_error "Error al extraer el tarball"
+        log_error "Verificando directorio de destino:"
+        ls -la "$release_dir" 2>/dev/null || log_error "No se puede acceder al directorio"
         exit 1
     fi
     
@@ -396,6 +408,14 @@ main() {
     # Crear release directory
     local release_dir
     release_dir=$(create_release_directory)
+    
+    # Verificar que obtuvimos un directorio válido
+    if [[ -z "$release_dir" || ! -d "$release_dir" ]]; then
+        log_error "Error al crear o obtener el directorio de release"
+        exit 1
+    fi
+    
+    log_info "📁 Usando directorio de release: $release_dir"
     
     # Configurar trap para rollback en caso de error
     trap "rollback_on_error '$release_dir'" ERR
