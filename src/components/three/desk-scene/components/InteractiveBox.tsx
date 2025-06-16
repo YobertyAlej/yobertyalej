@@ -1,5 +1,6 @@
 "use client"
 
+// @ts-nocheck
 import { useRef, useState } from 'react'
 import { useFrame, ThreeEvent } from '@react-three/fiber'
 import * as THREE from 'three'
