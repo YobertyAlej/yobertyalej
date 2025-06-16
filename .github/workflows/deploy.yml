@@ -128,6 +128,7 @@ jobs:
           mkdir -p deploy-artifact
           
           # Copiar archivos necesarios para producción
+          echo "📁 Copiando archivos de build..."
           cp -r .next deploy-artifact/
           cp -r public deploy-artifact/
           cp package.json deploy-artifact/
@@ -135,6 +136,7 @@ jobs:
           cp next.config.js deploy-artifact/
           
           # Crear archivo de información del build
+          echo "📝 Creando build-info.json..."
           cat > deploy-artifact/build-info.json << EOF
           {
             "commit": "${{ github.sha }}",
@@ -145,14 +147,22 @@ jobs:
           }
           EOF
           
+          # Verificar contenido antes de comprimir
+          echo "📋 Archivos a incluir en el artifact:"
+          ls -la deploy-artifact/
+          
           # Crear tarball comprimido
+          echo "📦 Creando tarball..."
           tar -czf deployment.tar.gz -C deploy-artifact .
           
           # Mostrar información del artifact
-          echo "📦 Artifact creado:"
+          echo "✅ Artifact creado exitosamente:"
           ls -lah deployment.tar.gz
-          echo "📋 Contenido:"
-          tar -tzf deployment.tar.gz | head -20
+          
+          # Verificar contenido del tarball (sin usar head para evitar write errors)
+          echo "📋 Verificando contenido del tarball:"
+          tar -tzf deployment.tar.gz 2>/dev/null | wc -l
+          echo "archivos incluidos en el tarball"
       
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v4
