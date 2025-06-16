@@ -41,12 +41,30 @@ log_step() {
 check_prerequisites() {
     log_step "Verificando prerequisites..."
     
+    # Debug: mostrar todas las variables importantes
+    log_info "🔍 Variables de configuración:"
+    log_info "   PROJECT_ROOT: $PROJECT_ROOT"
+    log_info "   RELEASES_DIR: $RELEASES_DIR"
+    log_info "   SHARED_DIR: $SHARED_DIR"
+    log_info "   CURRENT_SYMLINK: $CURRENT_SYMLINK"
+    log_info "   PM2_APP_NAME: $PM2_APP_NAME"
+    
     # Verificar que el directorio del proyecto existe
     if [[ ! -d "$PROJECT_ROOT" ]]; then
         log_error "Directorio del proyecto no existe: $PROJECT_ROOT"
         log_error "Ejecuta primero el script setup-droplet.sh"
         exit 1
     fi
+    
+    # Verificar estructura de directorios
+    log_info "📁 Verificando estructura de directorios..."
+    log_info "   PROJECT_ROOT existe: $([ -d "$PROJECT_ROOT" ] && echo "✅" || echo "❌")"
+    log_info "   RELEASES_DIR existe: $([ -d "$RELEASES_DIR" ] && echo "✅" || echo "❌")"
+    log_info "   SHARED_DIR existe: $([ -d "$SHARED_DIR" ] && echo "✅" || echo "❌")"
+    
+    # Verificar permisos
+    log_info "🔐 Verificando permisos..."
+    log_info "   PROJECT_ROOT writable: $([ -w "$PROJECT_ROOT" ] && echo "✅" || echo "❌")"
     
     # Verificar que PM2 está instalado
     if ! command -v pm2 >/dev/null 2>&1; then
@@ -76,11 +94,41 @@ create_release_directory() {
     
     log_step "Creando directorio de release: $release_dir"
     
-    mkdir -p "$release_dir"
+    # Debug: verificar variables y directorios padre
+    log_info "🔍 Debug - PROJECT_ROOT: $PROJECT_ROOT"
+    log_info "🔍 Debug - RELEASES_DIR: $RELEASES_DIR"
+    log_info "🔍 Debug - timestamp: $timestamp"
+    log_info "🔍 Debug - release_dir: $release_dir"
+    
+    # Verificar que el directorio padre existe
+    if [[ ! -d "$RELEASES_DIR" ]]; then
+        log_warn "Directorio releases no existe, creándolo: $RELEASES_DIR"
+        if ! mkdir -p "$RELEASES_DIR"; then
+            log_error "No se pudo crear el directorio releases: $RELEASES_DIR"
+            exit 1
+        fi
+    fi
+    
+    # Verificar permisos del directorio padre
+    if [[ ! -w "$RELEASES_DIR" ]]; then
+        log_error "No hay permisos de escritura en: $RELEASES_DIR"
+        log_error "Permisos actuales:"
+        ls -la "$RELEASES_DIR"
+        exit 1
+    fi
+    
+    # Crear el directorio de release
+    if ! mkdir -p "$release_dir"; then
+        log_error "mkdir falló para: $release_dir"
+        log_error "Error code: $?"
+        exit 1
+    fi
     
     # Verificar que el directorio se creó correctamente
     if [[ ! -d "$release_dir" ]]; then
-        log_error "No se pudo crear el directorio de release: $release_dir"
+        log_error "El directorio no existe después de mkdir: $release_dir"
+        log_error "Contenido del directorio padre:"
+        ls -la "$RELEASES_DIR"
         exit 1
     fi
     
