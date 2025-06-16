@@ -87,54 +87,7 @@ check_prerequisites() {
     log_info "✅ Prerequisites verificados"
 }
 
-# Función para crear release directory
-create_release_directory() {
-    local timestamp=$(date +%Y%m%d%H%M%S)
-    local release_dir="$RELEASES_DIR/$timestamp"
-    
-    log_step "Creando directorio de release: $release_dir"
-    
-    # Debug: verificar variables y directorios padre
-    log_info "🔍 Debug - PROJECT_ROOT: $PROJECT_ROOT"
-    log_info "🔍 Debug - RELEASES_DIR: $RELEASES_DIR"
-    log_info "🔍 Debug - timestamp: $timestamp"
-    log_info "🔍 Debug - release_dir: $release_dir"
-    
-    # Verificar que el directorio padre existe
-    if [[ ! -d "$RELEASES_DIR" ]]; then
-        log_warn "Directorio releases no existe, creándolo: $RELEASES_DIR"
-        if ! mkdir -p "$RELEASES_DIR"; then
-            log_error "No se pudo crear el directorio releases: $RELEASES_DIR"
-            exit 1
-        fi
-    fi
-    
-    # Verificar permisos del directorio padre
-    if [[ ! -w "$RELEASES_DIR" ]]; then
-        log_error "No hay permisos de escritura en: $RELEASES_DIR"
-        log_error "Permisos actuales:"
-        ls -la "$RELEASES_DIR"
-        exit 1
-    fi
-    
-    # Crear el directorio de release
-    if ! mkdir -p "$release_dir"; then
-        log_error "mkdir falló para: $release_dir"
-        log_error "Error code: $?"
-        exit 1
-    fi
-    
-    # Verificar que el directorio se creó correctamente
-    if [[ ! -d "$release_dir" ]]; then
-        log_error "El directorio no existe después de mkdir: $release_dir"
-        log_error "Contenido del directorio padre:"
-        ls -la "$RELEASES_DIR"
-        exit 1
-    fi
-    
-    log_info "✅ Directorio de release creado: $release_dir"
-    echo "$release_dir"
-}
+
 
 # Función para extraer y preparar archivos
 extract_and_prepare() {
@@ -454,16 +407,51 @@ main() {
     check_prerequisites "$deployment_file"
     
     # Crear release directory
-    local release_dir
-    release_dir=$(create_release_directory)
+    local timestamp=$(date +%Y%m%d%H%M%S)
+    local release_dir="$RELEASES_DIR/$timestamp"
     
-    # Verificar que obtuvimos un directorio válido
-    if [[ -z "$release_dir" || ! -d "$release_dir" ]]; then
-        log_error "Error al crear o obtener el directorio de release"
+    log_step "Creando directorio de release: $release_dir"
+    
+    # Debug: verificar variables y directorios padre
+    log_info "🔍 Debug - PROJECT_ROOT: $PROJECT_ROOT"
+    log_info "🔍 Debug - RELEASES_DIR: $RELEASES_DIR"
+    log_info "🔍 Debug - timestamp: $timestamp"
+    log_info "🔍 Debug - release_dir: $release_dir"
+    
+    # Verificar que el directorio padre existe
+    if [[ ! -d "$RELEASES_DIR" ]]; then
+        log_warn "Directorio releases no existe, creándolo: $RELEASES_DIR"
+        if ! mkdir -p "$RELEASES_DIR"; then
+            log_error "No se pudo crear el directorio releases: $RELEASES_DIR"
+            exit 1
+        fi
+    fi
+    
+    # Verificar permisos del directorio padre
+    if [[ ! -w "$RELEASES_DIR" ]]; then
+        log_error "No hay permisos de escritura en: $RELEASES_DIR"
+        log_error "Permisos actuales:"
+        ls -la "$RELEASES_DIR"
         exit 1
     fi
     
-    log_info "📁 Usando directorio de release: $release_dir"
+    # Crear el directorio de release
+    log_info "📁 Creando directorio: $release_dir"
+    if ! mkdir -p "$release_dir"; then
+        log_error "mkdir falló para: $release_dir"
+        log_error "Error code: $?"
+        exit 1
+    fi
+    
+    # Verificar que el directorio se creó correctamente
+    if [[ ! -d "$release_dir" ]]; then
+        log_error "El directorio no existe después de mkdir: $release_dir"
+        log_error "Contenido del directorio padre:"
+        ls -la "$RELEASES_DIR"
+        exit 1
+    fi
+    
+    log_info "✅ Directorio de release creado exitosamente: $release_dir"
     
     # Configurar trap para rollback en caso de error
     trap "rollback_on_error '$release_dir'" ERR
