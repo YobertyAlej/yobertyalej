@@ -69,7 +69,7 @@ export function Level({
       >
         <boxGeometry args={[0.2, 1, 0.6]} />
         <meshStandardMaterial 
-          color="red" 
+          color={0xff0000} 
           transparent 
           opacity={0}
         />
@@ -91,7 +91,7 @@ export function Level({
       >
         <boxGeometry args={[0.5, 0.4, 0.03]} />
         <meshStandardMaterial 
-          color="blue" 
+          color={0x0000ff} 
           transparent 
           opacity={0}
         />

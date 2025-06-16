@@ -3,7 +3,7 @@
 
 import { Canvas } from '@react-three/fiber'
 import { CameraControls, PerspectiveCamera, Environment } from '@react-three/drei'
-import { useRef, useState, useEffect, useMemo } from 'react'
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import { Level } from './components/Level'
 import { Sudo } from './components/Sudo'
 import { Camera } from './components/Camera'
@@ -12,11 +12,21 @@ import { InteractiveBox } from './components/InteractiveBox'
 import { WebScreen } from './components/WebScreen'
 import { useDebugControls } from './hooks/useDebugControls'
 
-type ViewState = 'default' | 'arcade' | 'blueBox'
+export type ViewState = 'default' | 'arcade' | 'blueBox'
 
-export default function DeskScene() {
+interface DeskSceneProps {
+  onViewChange?: (view: ViewState) => void
+  currentView?: ViewState
+  onHotspotHover?: (hotspotId: string | null) => void
+}
+
+export default function DeskScene({ 
+  onViewChange, 
+  currentView,
+  onHotspotHover 
+}: DeskSceneProps) {
   const controlsRef = useRef<CameraControls>(null)
-  const [view, setView] = useState<ViewState>('default')
+  const [view, setView] = useState<ViewState>(currentView || 'default')
   const [activeScreen, setActiveScreen] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -27,6 +37,19 @@ export default function DeskScene() {
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  // Sincronizar con currentView prop (solo desde afuera hacia adentro)
+  useEffect(() => {
+    if (currentView && currentView !== view) {
+      setView(currentView)
+    }
+  }, [currentView])
+
+  // Solo notificar cambios internos (como clicks en el 3D)
+  const handleInternalViewChange = useCallback((newView: ViewState) => {
+    setView(newView)
+    onViewChange?.(newView)
+  }, [onViewChange])
 
   // Ajustes responsivos
   const scale = isMobile ? 15 : 22
@@ -166,7 +189,10 @@ export default function DeskScene() {
       {/* Botón para volver a la vista general */}
       {view !== 'default' && (
         <button
-          onClick={() => setView('default')}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleInternalViewChange('default')
+          }}
           className="absolute top-5 right-5 z-10 px-6 py-3 bg-white/10 text-white border border-white/20 rounded-lg cursor-pointer backdrop-blur-md text-sm font-medium transition-all hover:bg-white/20"
         >
           ← Volver
@@ -196,8 +222,8 @@ export default function DeskScene() {
         <ambientLight intensity={Math.PI / 2} />
         <group scale={scale} position={isMobile ? [0, -6, 0] : [0, -9, 0]}>
           <Level 
-            onArcadeClick={() => setView('arcade')} 
-            onBlueBoxClick={() => setView('blueBox')}
+            onArcadeClick={() => handleInternalViewChange('arcade')} 
+            onBlueBoxClick={() => handleInternalViewChange('blueBox')}
             interactiveBoxPosition={interactiveBoxPosition}
             blueBoxPosition={blueBoxPosition}
           />
