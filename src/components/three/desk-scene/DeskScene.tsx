@@ -181,7 +181,7 @@ export default function DeskScene() {
           />
           
           <WebScreen
-            url="https://yobertyalej.github.io/"
+            url="https://yobertyalej.com/about/"
             position={[0.213, 0.856, 0.009]}
             rotation={[0, Math.PI, 0]}
             scale={0.011}

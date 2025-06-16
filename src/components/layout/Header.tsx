@@ -1,56 +1,157 @@
+"use client"
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '../ui/Button';
+import { Menu, X, Sun, Moon } from '../ui/Icons';
 
 export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    // Aquí puedes agregar la lógica para cambiar el tema
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header className="py-4 border-b border-gray-200 dark:border-gray-800">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center">
-          <Link href="/" className="text-xl font-bold">
-            Portfolio<span className="text-blue-500">.</span>
-          </Link>
-        </div>
-
-        <nav className="hidden md:flex space-x-6">
-          <Link href="/" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            Inicio
-          </Link>
-          <Link href="/about" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            Sobre Mí
-          </Link>
-          <Link href="/projects" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            Proyectos
-          </Link>
-          <Link href="/contact" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
-            Contacto
-          </Link>
-        </nav>
-
-        <div className="flex items-center space-x-4">
-          <button
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none"
-            aria-label="Cambiar tema"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-5 h-5"
+    <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          
+          {/* LOGO - Mobile First */}
+          <div className="flex items-center">
+            <Link 
+              href="/" 
+              className="text-lg sm:text-xl font-bold text-white hover:text-orange-400 transition-colors"
+              onClick={closeMenu}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-              />
-            </svg>
-          </button>
+              Portfolio<span className="text-orange-500">.</span>
+            </Link>
+          </div>
 
-          <Button variant="primary" size="sm">
-            Versión 0.1.0
-          </Button>
+          {/* DESKTOP NAVIGATION - Hidden on mobile */}
+          <nav className="hidden lg:flex items-center space-x-8">
+            <Link 
+              href="/" 
+              className="text-slate-300 hover:text-white transition-colors font-medium"
+            >
+              Inicio
+            </Link>
+            <Link 
+              href="/about" 
+              className="text-slate-300 hover:text-white transition-colors font-medium"
+            >
+              Sobre Mí
+            </Link>
+            <Link 
+              href="/about#contact" 
+              className="text-slate-300 hover:text-white transition-colors font-medium"
+            >
+              Contacto
+            </Link>
+          </nav>
+
+          {/* RIGHT SECTION - Desktop */}
+          <div className="hidden lg:flex items-center space-x-4">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 text-slate-300 hover:text-white transition-colors"
+              aria-label="Cambiar tema"
+            >
+              {isDarkMode ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
+            >
+              Versión 0.1.0
+            </Button>
+          </div>
+
+          {/* MOBILE RIGHT SECTION */}
+          <div className="flex items-center space-x-2 lg:hidden">
+            {/* Theme Toggle Mobile */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-full hover:bg-slate-800 focus:outline-none text-slate-300 hover:text-white transition-colors"
+              aria-label="Cambiar tema"
+            >
+              {isDarkMode ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </button>
+
+            {/* Hamburger Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-lg hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500 text-slate-300 hover:text-white transition-colors"
+              aria-label="Abrir menú"
+            >
+              {isMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* MOBILE MENU - Dropdown */}
+        {isMenuOpen && (
+          <div className="lg:hidden border-t border-slate-800 bg-slate-900/98 backdrop-blur-sm">
+            <nav className="py-4 space-y-2">
+              <Link 
+                href="/" 
+                className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all font-medium"
+                onClick={closeMenu}
+              >
+                Inicio
+              </Link>
+              <Link 
+                href="/about" 
+                className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all font-medium"
+                onClick={closeMenu}
+              >
+                Sobre Mí
+              </Link>
+              <Link 
+                href="/about#contact" 
+                className="block px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all font-medium"
+                onClick={closeMenu}
+              >
+                Contacto
+              </Link>
+              
+              {/* Version Badge Mobile */}
+              <div className="px-4 pt-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white"
+                >
+                  Versión 0.1.0
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
