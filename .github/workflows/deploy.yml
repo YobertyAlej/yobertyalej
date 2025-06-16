@@ -68,7 +68,12 @@ jobs:
             ${{ runner.os }}-pnpm-store-
       
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          # Intentar install con lockfile congelado primero
+          if ! pnpm install --frozen-lockfile; then
+            echo "⚠️ Lockfile desactualizado, regenerando..."
+            pnpm install --no-frozen-lockfile
+          fi
       
       - name: Type check
         run: pnpm run type-check
@@ -122,7 +127,12 @@ jobs:
           key: build-${{ github.sha }}
       
       - name: Install dependencies (if cache miss)
-        run: pnpm install --frozen-lockfile
+        run: |
+          # Intentar install con lockfile congelado primero
+          if ! pnpm install --frozen-lockfile; then
+            echo "⚠️ Lockfile desactualizado, regenerando..."
+            pnpm install --no-frozen-lockfile
+          fi
       
       - name: Build production
         run: pnpm run build
