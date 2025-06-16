@@ -9,30 +9,39 @@ import { Sudo } from './components/Sudo'
 import { Camera } from './components/Camera'
 import { Cactus } from './components/Cactus'
 import { InteractiveBox } from './components/InteractiveBox'
+import { WebScreen } from './components/WebScreen'
 import { useDebugControls } from './hooks/useDebugControls'
 
-type ViewState = 'default' | 'arcade'
+type ViewState = 'default' | 'arcade' | 'blueBox'
 
 export default function DeskScene() {
   const controlsRef = useRef<CameraControls>(null)
   const [view, setView] = useState<ViewState>('default')
+  const [activeScreen, setActiveScreen] = useState<string | null>(null)
   
   // Estados para los controles de debugging
-  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.3 })
+  const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.595, y: 0.60, z: 0.65 })
+  const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.05 })
   const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
-    position: { x: 25, y: 15, z: 45 },
-    target: { x: 5, y: -5, z: -5 }
+    position: { x: 5.76, y: 7.37, z: 7.55 },
+    target: { x: -5.8, y: 5.21, z: 7.6 }
+  })
+  const [blueBoxCameraSettings, setBlueBoxCameraSettings] = useState({
+    position: { x: 9.21, y: 6.29, z: -14.52 },
+    target: { x: 9.14, y: 4.19, z: -2.04 }
   })
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
-    position: { x: 30, y: 20, z: 60 },
-    target: { x: 5, y: -11, z: -5 }
+    position: { x: 47, y: 21, z: 49 },
+    target: { x: 4.5, y: 2, z:-2.92 }
   })
 
   // Configurar controles de debugging
   useDebugControls({
     cameraControlsRef: controlsRef,
     onInteractiveBoxChange: setInteractiveBoxPosition,
+    onBlueBoxChange: setBlueBoxPosition,
     onSaveArcadeCamera: setArcadeCameraSettings,
+    onSaveBlueBoxCamera: setBlueBoxCameraSettings,
     onSaveDefaultCamera: setDefaultCameraSettings
   })
 
@@ -51,6 +60,21 @@ export default function DeskScene() {
         arcadeCameraSettings.target.z,
         true
       )
+      // Activar la pantalla de arcade
+      setActiveScreen('arcade')
+    } else if (view === 'blueBox') {
+      // Usar configuración para la vista de la caja azul
+      controlsRef.current.setLookAt(
+        blueBoxCameraSettings.position.x, 
+        blueBoxCameraSettings.position.y, 
+        blueBoxCameraSettings.position.z,
+        blueBoxCameraSettings.target.x, 
+        blueBoxCameraSettings.target.y, 
+        blueBoxCameraSettings.target.z,
+        true
+      )
+      // Activar otra pantalla si es necesario
+      setActiveScreen('blueBox')
     } else if (view === 'default') {
       // Usar configuración guardada para la vista por defecto
       controlsRef.current.setLookAt(
@@ -62,8 +86,10 @@ export default function DeskScene() {
         defaultCameraSettings.target.z,
         true
       )
+      // Desactivar todas las pantallas en vista general
+      setActiveScreen(null)
     }
-  }, [view, arcadeCameraSettings, defaultCameraSettings])
+  }, [view, arcadeCameraSettings, blueBoxCameraSettings, defaultCameraSettings])
 
   return (
     <div 
@@ -133,17 +159,42 @@ export default function DeskScene() {
         <group scale={20} position={[5, -11, -5]}>
           <Level 
             onArcadeClick={() => setView('arcade')} 
+            onBlueBoxClick={() => setView('blueBox')}
             interactiveBoxPosition={interactiveBoxPosition}
+            blueBoxPosition={blueBoxPosition}
           />
           <Sudo />
           <Camera />
           <Cactus />
           <InteractiveBox position={[-0.8, 1.4, 0.4]} scale={0.15} />
+          
+          {/* Pantallas Web */}
+          <WebScreen
+            url="https://lidr-academy.github.io/AI4Devs-videogame/floodfill-YAG/index.html"
+            position={[-0.49, 0.84, 0.64]}
+            rotation={[0, 1.6, -0.0]}
+            scale={0.021}
+            width={821}
+            height={620}
+            isActive={activeScreen === 'arcade'}
+            tilt={-10}
+          />
+          
+          <WebScreen
+            url="https://yobertyalej.github.io/"
+            position={[0.213, 0.856, 0.009]}
+            rotation={[0, Math.PI, 0]}
+            scale={0.011}
+            width={1820}
+            height={870}
+            isActive={activeScreen === 'blueBox'}
+            tilt={-4.6}
+          />
         </group>
         <Environment preset="city" />
         <PerspectiveCamera 
           makeDefault 
-          position={[30, 20, 60]} 
+          position={[defaultCameraSettings.position.x, defaultCameraSettings.position.y, defaultCameraSettings.position.z]} 
           fov={55}
           near={0.1}
           far={1000}
