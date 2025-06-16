@@ -1,9 +1,10 @@
 "use client"
 
 import { useRef, useState } from 'react'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, ThreeEvent } from '@react-three/fiber'
 import * as THREE from 'three'
 import { InteractiveBoxProps } from '../types/desk.types'
+import '@/lib/three/setup'
 
 export function InteractiveBox({ scale = 1, ...props }: InteractiveBoxProps) {
   const ref = useRef<THREE.Mesh>(null!)
@@ -22,7 +23,7 @@ export function InteractiveBox({ scale = 1, ...props }: InteractiveBoxProps) {
       ref={ref}
       scale={(clicked ? 1.5 : 1) * scale}
       onClick={() => click(!clicked)}
-      onPointerOver={(event) => {
+      onPointerOver={(event: ThreeEvent<PointerEvent>) => {
         event.stopPropagation()
         hover(true)
       }}
