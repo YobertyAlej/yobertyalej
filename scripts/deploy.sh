@@ -87,14 +87,47 @@ extract_and_prepare() {
     
     log_step "Extrayendo archivos de deployment..."
     
+    # Verificar que el archivo de deployment existe y es legible
+    if [[ ! -f "$deployment_file" ]]; then
+        log_error "Archivo de deployment no encontrado: $deployment_file"
+        exit 1
+    fi
+    
+    if [[ ! -r "$deployment_file" ]]; then
+        log_error "Archivo de deployment no es legible: $deployment_file"
+        exit 1
+    fi
+    
+    # Mostrar información del archivo
+    log_info "📋 Información del archivo de deployment:"
+    ls -lah "$deployment_file"
+    
+    # Verificar que es un archivo tar válido
+    if ! tar -tzf "$deployment_file" >/dev/null 2>&1; then
+        log_error "El archivo no es un tarball válido: $deployment_file"
+        exit 1
+    fi
+    
+    log_info "✅ Archivo de deployment verificado"
+    
     # Extraer el tarball en el directorio de release
-    tar -xzf "$deployment_file" -C "$release_dir"
+    log_info "📦 Extrayendo archivos a: $release_dir"
+    if ! tar -xzf "$deployment_file" -C "$release_dir"; then
+        log_error "Error al extraer el tarball"
+        exit 1
+    fi
+    
+    # Mostrar contenido extraído
+    log_info "📋 Archivos extraídos:"
+    ls -la "$release_dir"
     
     # Verificar que los archivos esenciales están presentes
     local required_files=("package.json" ".next" "public")
     for file in "${required_files[@]}"; do
         if [[ ! -e "$release_dir/$file" ]]; then
             log_error "Archivo requerido no encontrado: $file"
+            log_error "Contenido del directorio de release:"
+            ls -la "$release_dir"
             exit 1
         fi
     done

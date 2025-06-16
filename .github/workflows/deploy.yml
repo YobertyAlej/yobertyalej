@@ -229,10 +229,36 @@ jobs:
           echo "🚀 Iniciando deployment..."
           echo "=================================================="
           
+          # Verificar que los archivos existen antes de ejecutar
+          echo "🔍 Verificando archivos en /tmp/:"
+          ls -la /tmp/deploy* || echo "No se encontraron archivos deploy*"
+          
+          echo ""
+          echo "📋 Información del archivo deployment.tar.gz:"
+          if [[ -f /tmp/deployment.tar.gz ]]; then
+            ls -lah /tmp/deployment.tar.gz
+            echo "✅ Archivo deployment.tar.gz encontrado"
+          else
+            echo "❌ Archivo deployment.tar.gz NO encontrado"
+            exit 1
+          fi
+          
+          echo ""
+          echo "📋 Información del script deploy.sh:"
+          if [[ -f /tmp/deploy.sh ]]; then
+            ls -lah /tmp/deploy.sh
+            echo "✅ Script deploy.sh encontrado"
+          else
+            echo "❌ Script deploy.sh NO encontrado"
+            exit 1
+          fi
+          
           # Hacer el script ejecutable
           chmod +x /tmp/deploy.sh
           
-          # Ejecutar deployment
+          echo ""
+          echo "🚀 Ejecutando deployment..."
+          # Ejecutar deployment con más verbose output
           /tmp/deploy.sh /tmp/deployment.tar.gz
           
           echo "=================================================="
