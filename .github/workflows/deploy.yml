@@ -16,7 +16,7 @@ on:
       skip_deploy:
         description: 'Skip deployment (only run tests)'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 # Configuración de concurrencia para evitar deployments simultáneos
@@ -106,7 +106,7 @@ jobs:
     name: Build Production
     runs-on: ubuntu-latest
     needs: validate
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.inputs.skip_deploy != 'true'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 15
     
     steps:
@@ -190,9 +190,8 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: [validate, build]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.event.inputs.skip_deploy != 'true'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 10
-    environment: production
     
     steps:
       - name: Checkout deployment scripts
