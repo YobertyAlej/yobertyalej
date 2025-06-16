@@ -1,0 +1,65 @@
+# Archivo de ejemplo para terraform.tfvars
+# Copia este archivo como terraform.tfvars y completa con tus valores
+
+# Token de API de Digital Ocean (REQUERIDO)
+# Obtener en: https://cloud.digitalocean.com/account/api/tokens
+do_token = "dop_v1_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+# IP del Droplet existente (ya configurado por defecto)
+droplet_ip = "192.241.137.162"
+
+# Dominio principal (ya configurado por defecto)
+domain_name = "yobertyalej.com"
+
+# Ruta a la clave SSH privada para conexión al Droplet
+# Asegúrate de que esta clave tenga acceso al Droplet
+ssh_private_key_path = "~/.ssh/id_rsa"
+
+# Nombre del proyecto en Digital Ocean
+project_name = "yobertyalej-portfolio"
+
+# Región de Digital Ocean (donde está el Droplet)
+region = "nyc1"
+
+# Tamaño del Droplet (solo para referencia, no se modifica)
+droplet_size = "s-1vcpu-1gb"
+
+# Entorno de deployment
+environment = "production"
+
+# Habilitar backups automáticos
+backup_enabled = true
+
+# Habilitar monitoreo
+monitoring_enabled = true
+
+# Email para recibir alertas de monitoreo
+alert_email = "gyoberty@gmail.com"
+
+# Tags para organizar recursos
+tags = [
+  "portfolio",
+  "nextjs", 
+  "production",
+  "terraform"
+]
+
+# Configuración adicional (opcional)
+# Estas variables pueden ser útiles para configuraciones futuras
+
+# Si planeas usar múltiples entornos
+# environment_suffix = ""
+
+# Si necesitas configurar alertas personalizadas
+# custom_alerts = {
+#   cpu_threshold    = 80
+#   memory_threshold = 90
+#   disk_threshold   = 85
+# }
+
+# Si tienes subdominios adicionales
+# subdomains = [
+#   "api",
+#   "blog", 
+#   "admin"
+# ] 

@@ -39,3 +39,55 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Terraform files
+tf/terraform.tfvars
+tf/.terraform/
+tf/*.tfstate
+tf/*.tfstate.backup
+tf/.terraform.lock.hcl
+
+# Deployment artifacts
+deployment.tar.gz
+deployment-*/
+
+# PM2 ecosystem (sensitive)
+ecosystem.config.js.backup
+
+# Logs
+logs/
+*.log
+
+# SSH keys (if any)
+*.pem
+*.key
+id_rsa*
+
+# Backup files
+*.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# OS specific
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Package manager locks (keep pnpm-lock.yaml)
+package-lock.json
+yarn.lock
