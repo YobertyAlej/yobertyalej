@@ -9,12 +9,23 @@ import {
   WelcomeTour, 
   MobileGuide 
 } from '@/components/home'
+// import { HotspotDebug } from '@/components/debug/HotspotDebug' // Solo para desarrollo
 
 export default function Home() {
   const [currentView, setCurrentView] = useState<ViewState>('default')
+  const [hotspotPositions, setHotspotPositions] = useState<{
+    arcade: {x: number, y: number, z: number}
+    blueBox: {x: number, y: number, z: number}
+    scale: number
+    groupPosition: [number, number, number]
+  } | null>(null)
 
   const handleViewChange = useCallback((view: ViewState) => {
     setCurrentView(view)
+  }, [])
+
+  const handleHotspotPositions = useCallback((positions: any) => {
+    setHotspotPositions(positions)
   }, [])
 
   return (
@@ -22,9 +33,13 @@ export default function Home() {
       <DeskScene 
         currentView={currentView}
         onViewChange={handleViewChange}
+        onHotspotPositions={handleHotspotPositions}
       />
       
-      {/* Debug Panel removido - UI limpia */}
+      {/* Debug Panel desactivado para producción */}
+      {/* {process.env.NODE_ENV === 'development' && (
+        <HotspotDebug hotspotPositions={hotspotPositions} />
+      )} */}
       
       {/* UI Overlays en vista general */}
       {currentView === 'default' && (
@@ -32,7 +47,8 @@ export default function Home() {
           <HeroOverlay />
           <InteractiveHotspots 
             view={currentView} 
-            onViewChange={handleViewChange} 
+            onViewChange={handleViewChange}
+            hotspotPositions={hotspotPositions}
           />
           <NavigationGuide 
             currentView={currentView} 

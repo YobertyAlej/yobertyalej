@@ -13,20 +13,51 @@ interface HotspotData {
 interface InteractiveHotspotsProps {
   view: string
   onViewChange: (view: string) => void
+  hotspotPositions?: {
+    arcade: {x: number, y: number, z: number}
+    blueBox: {x: number, y: number, z: number}
+    scale: number
+    groupPosition: [number, number, number]
+  } | null
 }
 
-export function InteractiveHotspots({ view, onViewChange }: InteractiveHotspotsProps) {
+export function InteractiveHotspots({ view, onViewChange, hotspotPositions }: InteractiveHotspotsProps) {
+  // Función para convertir posiciones 3D a coordenadas 2D de pantalla
+  const project3DTo2D = (pos3D: {x: number, y: number, z: number}) => {
+    if (!hotspotPositions) return { x: '50%', y: '50%' }
+    
+    // Aplicar transformaciones de la escena (scale y groupPosition)
+    const scaledX = pos3D.x * hotspotPositions.scale + hotspotPositions.groupPosition[0]
+    const scaledY = pos3D.y * hotspotPositions.scale + hotspotPositions.groupPosition[1]
+    const scaledZ = pos3D.z * hotspotPositions.scale + hotspotPositions.groupPosition[2]
+    
+    // Proyección simplificada a coordenadas de pantalla
+    // Estas fórmulas proyectan la vista isométrica a coordenadas 2D
+    const screenX = 50 + (scaledX - scaledZ) * 1.5  // Perspectiva isométrica
+    const screenY = 50 - (scaledY + (scaledX + scaledZ) * 0.5) * 1.2  // Altura + profundidad
+    
+    // Limitar a valores razonables y convertir a porcentajes
+    const clampedX = Math.max(10, Math.min(90, screenX))
+    const clampedY = Math.max(10, Math.min(90, screenY))
+    
+    return { 
+      x: `${clampedX}%`, 
+      y: `${clampedY}%` 
+    }
+  }
+
+  // Calcular posiciones dinámicamente basadas en las coordenadas 3D reales
   const hotspots: HotspotData[] = [
     {
       id: 'arcade',
-      position: { x: '25%', y: '60%' },
+      position: hotspotPositions ? project3DTo2D(hotspotPositions.arcade) : { x: '25%', y: '60%' },
       title: 'Arcade Machine',
       description: 'Juego Flood Fill desarrollado con IA',
       isVisible: view === 'default'
     },
     {
       id: 'blueBox',
-      position: { x: '75%', y: '70%' },
+      position: hotspotPositions ? project3DTo2D(hotspotPositions.blueBox) : { x: '75%', y: '70%' },
       title: 'About Me Screen',
       description: 'Mi historia profesional interactiva',
       isVisible: view === 'default'

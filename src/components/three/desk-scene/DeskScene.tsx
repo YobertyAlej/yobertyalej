@@ -10,7 +10,7 @@ import { Camera } from './components/Camera'
 import { Cactus } from './components/Cactus'
 import { InteractiveBox } from './components/InteractiveBox'
 import { WebScreen } from './components/WebScreen'
-import { useDebugControls } from './hooks/useDebugControls'
+// import { useDebugControls } from './hooks/useDebugControls' // Solo para desarrollo
 
 export type ViewState = 'default' | 'arcade' | 'blueBox'
 
@@ -18,12 +18,14 @@ interface DeskSceneProps {
   onViewChange?: (view: ViewState) => void
   currentView?: ViewState
   onHotspotHover?: (hotspotId: string | null) => void
+  onHotspotPositions?: (positions: { arcade: {x: number, y: number, z: number}, blueBox: {x: number, y: number, z: number}, scale: number, groupPosition: [number, number, number] }) => void
 }
 
 export default function DeskScene({ 
   onViewChange, 
   currentView,
-  onHotspotHover 
+  onHotspotHover,
+  onHotspotPositions
 }: DeskSceneProps) {
   const controlsRef = useRef<CameraControls>(null)
   const [view, setView] = useState<ViewState>(currentView || 'default')
@@ -68,7 +70,7 @@ export default function DeskScene({
       : { x: 0, y: 0, z: 0 }      // Escritorio: enfoque central
   ), [isMobile])
 
-  // Estados para los controles de debugging
+  // Estados para posiciones de elementos interactivos
   const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.595, y: 0.60, z: 0.65 })
   const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.05 })
   // Configuraciones de cámara responsivas
@@ -100,6 +102,18 @@ export default function DeskScene({
     target: cameraInitialTarget
   })
 
+  // Comunicar posiciones 3D para hotspots
+  useEffect(() => {
+    if (onHotspotPositions) {
+      onHotspotPositions({
+        arcade: interactiveBoxPosition,
+        blueBox: blueBoxPosition,
+        scale: scale,
+        groupPosition: isMobile ? [0, -6, 0] : [0, -9, 0]
+      })
+    }
+  }, [interactiveBoxPosition, blueBoxPosition, scale, isMobile, onHotspotPositions])
+
   // Actualizar settings si cambia el modo de dispositivo (por ej. al redimensionar)
   useEffect(() => {
     setDefaultCameraSettings({
@@ -128,15 +142,7 @@ export default function DeskScene({
     return () => clearTimeout(timer)
   }, [cameraInitialPosition, cameraInitialTarget])
 
-  // Configurar controles de debugging - DESHABILITADO
-  // useDebugControls({
-  //   cameraControlsRef: controlsRef,
-  //   onInteractiveBoxChange: setInteractiveBoxPosition,
-  //   onBlueBoxChange: setBlueBoxPosition,
-  //   onSaveArcadeCamera: () => {}, // Deshabilitado ya que ahora es responsivo
-  //   onSaveBlueBoxCamera: () => {}, // Deshabilitado ya que ahora es responsivo
-  //   onSaveDefaultCamera: setDefaultCameraSettings
-  // })
+  // Debug controls removidos para producción
 
   // Manejar las transiciones de cámara
   useEffect(() => {
