@@ -3,7 +3,7 @@
 
 import * as THREE from 'three'
 import { useDeskModel } from '../hooks/useDeskModel'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
 interface LevelProps {
   onArcadeClick?: () => void
@@ -21,10 +21,7 @@ export function Level({
   const { nodes } = useDeskModel()
   const groupRef = useRef<THREE.Group>(null)
   
-  // Debug: mostrar todos los nodos disponibles
-  useEffect(() => {
-    console.log('Available nodes:', Object.keys(nodes))
-  }, [nodes])
+  // Nodos del modelo cargados
 
   // Crear un mesh interactivo temporal para la máquina de arcade
   // Esto será reemplazado una vez que identifiquemos el nodo correcto
@@ -69,7 +66,7 @@ export function Level({
       >
         <boxGeometry args={[0.2, 1, 0.6]} />
         <meshStandardMaterial 
-          color="red" 
+          color={0xff0000} 
           transparent 
           opacity={0}
         />
@@ -91,7 +88,7 @@ export function Level({
       >
         <boxGeometry args={[0.5, 0.4, 0.03]} />
         <meshStandardMaterial 
-          color="blue" 
+          color={0x0000ff} 
           transparent 
           opacity={0}
         />

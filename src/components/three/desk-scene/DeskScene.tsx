@@ -2,48 +2,147 @@
 "use client"
 
 import { Canvas } from '@react-three/fiber'
-import { Fisheye, CameraControls, PerspectiveCamera, Environment } from '@react-three/drei'
-import { useRef, useState, useEffect } from 'react'
+import { CameraControls, PerspectiveCamera, Environment } from '@react-three/drei'
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import { Level } from './components/Level'
 import { Sudo } from './components/Sudo'
 import { Camera } from './components/Camera'
 import { Cactus } from './components/Cactus'
 import { InteractiveBox } from './components/InteractiveBox'
 import { WebScreen } from './components/WebScreen'
-import { useDebugControls } from './hooks/useDebugControls'
+// import { useDebugControls } from './hooks/useDebugControls' // Solo para desarrollo
 
-type ViewState = 'default' | 'arcade' | 'blueBox'
+export type ViewState = 'default' | 'arcade' | 'blueBox'
 
-export default function DeskScene() {
+interface DeskSceneProps {
+  onViewChange?: (view: ViewState) => void
+  currentView?: ViewState
+  onHotspotHover?: (hotspotId: string | null) => void
+  onHotspotPositions?: (positions: { arcade: {x: number, y: number, z: number}, blueBox: {x: number, y: number, z: number}, scale: number, groupPosition: [number, number, number] }) => void
+}
+
+export default function DeskScene({ 
+  onViewChange, 
+  currentView,
+  onHotspotHover,
+  onHotspotPositions
+}: DeskSceneProps) {
   const controlsRef = useRef<CameraControls>(null)
-  const [view, setView] = useState<ViewState>('default')
+  const [view, setView] = useState<ViewState>(currentView || 'default')
   const [activeScreen, setActiveScreen] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detectar si es un dispositivo móvil
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Sincronizar con currentView prop (solo desde afuera hacia adentro)
+  useEffect(() => {
+    if (currentView && currentView !== view) {
+      setView(currentView)
+    }
+  }, [currentView])
+
+  // Solo notificar cambios internos (como clicks en el 3D)
+  const handleInternalViewChange = useCallback((newView: ViewState) => {
+    setView(newView)
+    onViewChange?.(newView)
+  }, [onViewChange])
+
+  // Ajustes responsivos
+  const scale = isMobile ? 15 : 22
+  const fov = isMobile ? 80 : 65
   
-  // Estados para los controles de debugging
+  // Posiciones de cámara centradas para móvil y escritorio
+  const cameraInitialPosition = useMemo(() => (
+    isMobile 
+      ? { x: 45, y: 25, z: 45 }  // Móvil: más alejado para vista completa sin cortes
+      : { x: 50, y: 30, z: 50 }   // Escritorio: más alejado para vista completa sin cortes
+  ), [isMobile])
+  
+  const cameraInitialTarget = useMemo(() => (
+    isMobile 
+      ? { x: 0, y: 0, z: 0 }     // Móvil: enfoque al centro
+      : { x: 0, y: 0, z: 0 }      // Escritorio: enfoque central
+  ), [isMobile])
+
+  // Estados para posiciones de elementos interactivos
   const [interactiveBoxPosition, setInteractiveBoxPosition] = useState({ x: -0.595, y: 0.60, z: 0.65 })
   const [blueBoxPosition, setBlueBoxPosition] = useState({ x: 0.2, y: 0.8, z: 0.05 })
-  const [arcadeCameraSettings, setArcadeCameraSettings] = useState({
-    position: { x: 5.76, y: 7.37, z: 7.55 },
-    target: { x: -5.8, y: 5.21, z: 7.6 }
-  })
-  const [blueBoxCameraSettings, setBlueBoxCameraSettings] = useState({
-    position: { x: 9.21, y: 6.29, z: -14.52 },
-    target: { x: 9.14, y: 4.19, z: -2.04 }
-  })
+  // Configuraciones de cámara responsivas
+  const arcadeCameraSettings = useMemo(() => (
+    isMobile 
+      ? {
+          position: { x: 2.18, y: 7.08, z: 10.48 },
+          target: { x: -4, y: 6, z: 10 }
+        }
+      : {
+          position: { x: 3.21, y: 12.08, z: 14.28 },
+          target: { x: -6.65, y: 10.42, z: 14.08 }
+        }
+  ), [isMobile])
+  
+  const blueBoxCameraSettings = useMemo(() => (
+    isMobile 
+      ? {
+          position: { x: 3, y: 7, z: -8 },
+          target: { x: 3, y: 4, z: -1.5 }
+        }
+      : {
+          position: { x: 4.82, y: 10.6, z: -12.41 },
+          target: { x: 4.67, y: 6.92, z: -2.18 }
+        }
+  ), [isMobile])
   const [defaultCameraSettings, setDefaultCameraSettings] = useState({
-    position: { x: 47, y: 21, z: 49 },
-    target: { x: 4.5, y: 2, z:-2.92 }
+    position: cameraInitialPosition,
+    target: cameraInitialTarget
   })
 
-  // Configurar controles de debugging
-  useDebugControls({
-    cameraControlsRef: controlsRef,
-    onInteractiveBoxChange: setInteractiveBoxPosition,
-    onBlueBoxChange: setBlueBoxPosition,
-    onSaveArcadeCamera: setArcadeCameraSettings,
-    onSaveBlueBoxCamera: setBlueBoxCameraSettings,
-    onSaveDefaultCamera: setDefaultCameraSettings
-  })
+  // Comunicar posiciones 3D para hotspots
+  useEffect(() => {
+    if (onHotspotPositions) {
+      onHotspotPositions({
+        arcade: interactiveBoxPosition,
+        blueBox: blueBoxPosition,
+        scale: scale,
+        groupPosition: isMobile ? [0, -6, 0] : [0, -9, 0]
+      })
+    }
+  }, [interactiveBoxPosition, blueBoxPosition, scale, isMobile, onHotspotPositions])
+
+  // Actualizar settings si cambia el modo de dispositivo (por ej. al redimensionar)
+  useEffect(() => {
+    setDefaultCameraSettings({
+      position: cameraInitialPosition,
+      target: cameraInitialTarget
+    })
+  }, [cameraInitialPosition, cameraInitialTarget])
+
+  // Configurar la cámara inicial cuando se monta el componente
+  useEffect(() => {
+    if (!controlsRef.current) return
+
+    // Pequeño delay para asegurar que el componente esté completamente montado
+    const timer = setTimeout(() => {
+      controlsRef.current?.setLookAt(
+        cameraInitialPosition.x,
+        cameraInitialPosition.y,
+        cameraInitialPosition.z,
+        cameraInitialTarget.x,
+        cameraInitialTarget.y,
+        cameraInitialTarget.z,
+        false // Sin animación para la posición inicial
+      )
+    }, 100)
+
+    return () => clearTimeout(timer)
+  }, [cameraInitialPosition, cameraInitialTarget])
+
+  // Debug controls removidos para producción
 
   // Manejar las transiciones de cámara
   useEffect(() => {
@@ -92,44 +191,15 @@ export default function DeskScene() {
   }, [view, arcadeCameraSettings, blueBoxCameraSettings, defaultCameraSettings])
 
   return (
-    <div 
-      style={{ 
-        position: 'relative',
-        width: '100%', 
-        height: '80vh',
-        minHeight: '600px',
-        margin: 0,
-        padding: 0,
-        overflow: 'hidden',
-        backgroundColor: '#101828'
-      }}
-    >
+    <div className="relative w-full h-screen">
       {/* Botón para volver a la vista general */}
       {view !== 'default' && (
         <button
-          onClick={() => setView('default')}
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            zIndex: 10,
-            padding: '12px 24px',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
-            color: 'white',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            backdropFilter: 'blur(10px)',
-            fontSize: '14px',
-            fontWeight: '500',
-            transition: 'all 0.3s ease'
+          onClick={(e) => {
+            e.stopPropagation()
+            handleInternalViewChange('default')
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
-          }}
+          className="absolute top-5 right-5 z-10 px-6 py-3 bg-white/10 text-white border border-white/20 rounded-lg cursor-pointer backdrop-blur-md text-sm font-medium transition-all hover:bg-white/20"
         >
           ← Volver
         </button>
@@ -152,14 +222,14 @@ export default function DeskScene() {
           ref={controlsRef}
           minPolarAngle={Math.PI / 8} 
           maxPolarAngle={Math.PI / 2.2}
-          minDistance={5}
-          maxDistance={80}
+          minDistance={10}
+          maxDistance={120}
         />
         <ambientLight intensity={Math.PI / 2} />
-        <group scale={20} position={[5, -11, -5]}>
+        <group scale={scale} position={isMobile ? [0, -6, 0] : [0, -9, 0]}>
           <Level 
-            onArcadeClick={() => setView('arcade')} 
-            onBlueBoxClick={() => setView('blueBox')}
+            onArcadeClick={() => handleInternalViewChange('arcade')} 
+            onBlueBoxClick={() => handleInternalViewChange('blueBox')}
             interactiveBoxPosition={interactiveBoxPosition}
             blueBoxPosition={blueBoxPosition}
           />
@@ -181,7 +251,7 @@ export default function DeskScene() {
           />
           
           <WebScreen
-            url="https://yobertyalej.github.io/"
+            url="https://yobertyalej.com/about/"
             position={[0.213, 0.856, 0.009]}
             rotation={[0, Math.PI, 0]}
             scale={0.011}
@@ -195,7 +265,7 @@ export default function DeskScene() {
         <PerspectiveCamera 
           makeDefault 
           position={[defaultCameraSettings.position.x, defaultCameraSettings.position.y, defaultCameraSettings.position.z]} 
-          fov={55}
+          fov={fov}
           near={0.1}
           far={1000}
         />

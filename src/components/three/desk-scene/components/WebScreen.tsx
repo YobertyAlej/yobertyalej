@@ -38,9 +38,9 @@ export function WebScreen({
         <mesh ref={meshRef}>
           <planeGeometry args={[width / 30, height / 30]} />
           <meshBasicMaterial 
-            color={isActive ? "#ffffff" : "transparent"} 
+            color={isActive ? 0xffffff : 0x000000} 
             transparent 
-            opacity={isActive ? 0 : 0}
+            opacity={0}
           />
         </mesh>
 

@@ -1,5 +1,6 @@
 // Main component
 export { default as DeskScene } from './DeskScene'
+export type { ViewState } from './DeskScene'
 
 // Individual components
 export { Level } from './components/Level'
