@@ -798,31 +798,31 @@ export default function AboutPage() {
               Conectemos y construyamos el futuro de la tecnología juntos
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="min-h-[48px] bg-white text-slate-900 hover:bg-slate-100 font-semibold">
-                <Calendar className="mr-2 w-4 h-4" />
-                Charlemos sobre IA
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="min-h-[48px] border-white text-white hover:bg-white/10 font-semibold"
-              >
-                Ver mis Proyectos
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
+            <div className="flex justify-center">
+              <Link href="mailto:ai@yobertyalej.com">
+                <Button size="lg" className="min-h-[48px] bg-orange-500 text-slate-900 hover:bg-orange-400 font-semibold">
+                  <Calendar className="mr-2 w-4 h-4" />
+                  Charlemos sobre IA
+                </Button>
+              </Link>
             </div>
 
             <div className="flex items-center justify-center gap-4 lg:gap-6 pt-4">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
-                <Linkedin className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
-                <Github className="w-5 h-5" />
-              </Button>
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
-                <Twitter className="w-5 h-5" />
-              </Button>
+              <Link href="https://linkedin.com/in/yobertyalej" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
+                  <Linkedin className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="https://github.com/yobertyalej" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
+                  <Github className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="https://twitter.com/yobertyalej" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 p-2">
+                  <Twitter className="w-5 h-5" />
+                </Button>
+              </Link>
             </div>
 
             <div className="pt-4">
@@ -830,7 +830,7 @@ export default function AboutPage() {
                 variant="ghost" 
                 size="sm" 
                 onClick={copyEmail} 
-                className="text-white hover:bg-white/10 gap-2 min-h-[40px]"
+                className="text-white hover:bg-white/10 gap-2 min-h-[40px] cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
                 ai@yobertyalej.com
